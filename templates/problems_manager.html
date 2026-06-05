@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIRP - Cadastrar Problema</title>
+</head>
+<body>
+
+    <!-- Centralização simples baseada no layout da imagem -->
+    <main style="max-width: 400px; margin: 50px auto; text-align: center; font-family: sans-serif;">
+        
+        <!-- Título Principal -->
+        <h1 style="font-size: 3rem; letter-spacing: 2px; margin-bottom: 40px;">SIRP</h1>
+
+        <!-- Formulário que aponta para a rota POST básica de problemas -->
+        <form action="/api/problems/add" method="POST">
+            
+            <!-- Campo 1: Título do Problema -->
+            <div style="margin-bottom: 25px;">
+                <input type="text" 
+                       id="title" 
+                       name="title" 
+                       placeholder="TÍTULO DO PROBLEMA" 
+                       required 
+                       style="width: 100%; padding: 12px; text-align: center; border: 1px solid #000; border-radius: 8px; box-sizing: border-box;">
+            </div>
+
+            <!-- Campo 2: Áreas Relacionadas -->
+            <div style="margin-bottom: 25px;">
+                <input type="text" 
+                       id="areas" 
+                       name="areas" 
+                       placeholder="ÁREAS RELACIONADAS AO PROBLEMA" 
+                       required 
+                       style="width: 100%; padding: 12px; text-align: center; border: 1px solid #000; border-radius: 8px; box-sizing: border-box;">
+            </div>
+
+            <!-- Campo 3: Descrição do Problema -->
+            <div style="margin-bottom: 35px;">
+                <textarea id="description" 
+                          name="description" 
+                          placeholder="DESCRIÇÃO DO PROBLEMA" 
+                          required 
+                          rows="8" 
+                          style="width: 100%; padding: 20px; text-align: center; border: 1px solid #000; border-radius: 24px; box-sizing: border-box; resize: none; font-family: sans-serif;"></textarea>
+            </div>
+
+            <!-- Botão de Envio -->
+            <div>
+                <button type="submit" 
+                        style="padding: 10px 20px; font-weight: bold; text-transform: uppercase; background: #fff; border: 1px solid #000; border-radius: 8px; cursor: pointer;">
+                    Enviar Problema
+                </button>
+            </div>
+
+        </form>
+
+        <!-- Navegação de retorno -->
+        <footer style="margin-top: 30px;">
+            <a href="/landing-page" style="color: #555; text-decoration: none; font-size: 0.9rem;">Voltar para o Início</a>
+        </footer>
+
+    </main>
+
+</body>
+</html>
