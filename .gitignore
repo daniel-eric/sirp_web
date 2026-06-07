@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Nunca suba pro git pois está nosso ouro
+.env
+
 # Distribution / packaging
 .Python
 build/
