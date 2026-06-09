@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>SIRP - Reportar</title>
-    <link rel="icon" type="image/png" href="assets/sirp_logo_min.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>SIRP - Reportar Problema</title>
+    <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
 <body>
     <header>
-        <a href="index.html">
-            <img src="assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
+        <a href="/landing-page">
+            <img src="/assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
         </a>
-        
+
         <div class="menu-wrapper">
             <nav id="menu-extensivel">
-                <a href="perfil.html">Perfil</a>
-                <a href="index.html">Problemas</a>
-                <a id="logout">Logout</a>
+                <a href="/profile">Perfil</a>
+                <a href="/landing-page">Problemas</a>
+                <a href="/" id="logout-link">Logout</a>
             </nav>
-            
+
             <button id="menu" aria-label="Abrir menu" onclick="document.getElementById('menu-extensivel').classList.toggle('aberto')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -27,13 +27,88 @@
                     <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
             </button>
-            
-            <a class="cta" href="login.html" style="text-decoration: none; display: inline-block;">Entrar</a>
         </div>
     </header>
 
-    <main> 
-       
+    <main>
+        <div class="report-page-wrapper">
+            <form class="report-form" id="chat-widget" style="display: flex; flex-direction: column; gap: 15px;">
+                <h2>Assistente IA</h2>
+
+                <div class="chat-toggle-area">
+                    <button class="cta" type="button" id="btn-iniciar-chat" onclick="iniciarChat()" style="font-size: 0.8rem; padding: 15px 20px;">
+                        &#129302; Usar Assistente IA
+                    </button>
+                </div>
+
+                <div id="chat-container">
+                    <div id="chat-messages"></div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Digite sua resposta..." disabled>
+                        <button type="button" id="chat-send" disabled>Enviar</button>
+                    </div>
+                    <div class="chat-status" id="chat-status"></div>
+                </div>
+            </form>
+
+            <form class="report-form" action="/api/desafios/add" method="POST">
+                <h2>Reportar Problema</h2>
+
+                {% if request.query_params.get('error') == 'add' %}
+                <div id="mensagem-erro" class="visivel">
+                    &#9888;&#65039; Erro ao cadastrar problema. Tente novamente.
+                </div>
+                {% else %}
+                <div id="mensagem-erro">
+                    &#9888;&#65039; Erro ao cadastrar problema.
+                </div>
+                {% endif %}
+
+                <div class="input-group">
+                    <label for="titulo">Título do Problema:</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Descreva o título em poucas palavras" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="areas">Áreas Relacionadas:</label>
+                    <input type="text" id="areas" name="areas" placeholder="Ex: TECNOLOGIA DA INFORMAÇÃO | GASTRONOMIA | MARKETING" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="contexto">Contexto:</label>
+                    <textarea id="contexto" name="contexto" rows="4" placeholder="Descreva o contexto do problema..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="atores">Atores Envolvidos:</label>
+                    <input type="text" id="atores" name="atores" placeholder="Quem está envolvido no problema?">
+                </div>
+
+                <div class="input-group">
+                    <label for="impacto">Impacto:</label>
+                    <textarea id="impacto" name="impacto" rows="4" placeholder="Qual o impacto do problema?"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="contornos">Contornos:</label>
+                    <textarea id="contornos" name="contornos" rows="4" placeholder="Quais os limites e delimitações do problema?"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="metricas_sucesso">Métricas de Sucesso:</label>
+                    <textarea id="metricas_sucesso" name="metricas_sucesso" rows="3" placeholder="Como saberemos que o problema foi resolvido?"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="restricoes">Restrições:</label>
+                    <textarea id="restricoes" name="restricoes" rows="3" placeholder="Quais são as restrições conhecidas?"></textarea>
+                </div>
+
+                <button class="cta" type="submit">Enviar Problema</button>
+
+                <a href="/landing-page" class="link">Voltar para o Feed</a>
+            </form>
+        </div>
     </main>
 
     <footer>
@@ -51,9 +126,121 @@
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
             </a>
-        </div>    
+        </div>
     </footer>
-    
-    
+
+    <script>
+        let chatAtivo = false;
+        let chatFinalizado = false;
+
+        function adicionarMsg(tipo, texto) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = 'msg ' + (tipo === 'bot' ? 'msg-bot' : 'msg-user');
+            div.textContent = texto;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function setCarregando(ativo) {
+            document.getElementById('chat-input').disabled = ativo;
+            document.getElementById('chat-send').disabled = ativo;
+            document.getElementById('chat-status').textContent = ativo ? 'Processando...' : '';
+        }
+
+        function setInputHabilitado(habilitado) {
+            document.getElementById('chat-input').disabled = !habilitado;
+            document.getElementById('chat-send').disabled = !habilitado;
+            if (habilitado) document.getElementById('chat-input').focus();
+        }
+
+        async function iniciarChat() {
+            document.getElementById('btn-iniciar-chat').style.display = 'none';
+            document.getElementById('chat-container').classList.add('ativo');
+            chatAtivo = true;
+
+            setCarregando(true);
+            try {
+                const resp = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mensagem: 'iniciar' })
+                });
+                const data = await resp.json();
+                if (data.resposta) {
+                    adicionarMsg('bot', data.resposta);
+                }
+                setInputHabilitado(true);
+            } catch (e) {
+                adicionarMsg('bot', 'Erro ao conectar com o assistente. Tente novamente.');
+            }
+            setCarregando(false);
+        }
+
+        async function enviarMensagem() {
+            if (!chatAtivo || chatFinalizado) return;
+
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            adicionarMsg('user', msg);
+            input.value = '';
+            setCarregando(true);
+
+            try {
+                const resp = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mensagem: msg })
+                });
+                const data = await resp.json();
+
+                if (data.resposta) {
+                    adicionarMsg('bot', data.resposta);
+                }
+
+                if (data.rascunho_pronto && !data.finalizado) {
+                    setInputHabilitado(true);
+                    document.getElementById('chat-status').textContent =
+                        'Revise o rascunho acima e digite "perfeito" para publicar, ou peça ajustes.';
+                }
+
+                if (data.finalizado) {
+                    chatFinalizado = true;
+                    setInputHabilitado(false);
+
+                    if (data.rascunho) {
+                        const r = data.rascunho;
+                        if (r['Título']) document.getElementById('titulo').value = r['Título'];
+                        if (r['Áreas']) document.getElementById('areas').value = r['Áreas'];
+                        if (r['Contexto']) document.getElementById('contexto').value = r['Contexto'];
+                        if (r['Atores']) document.getElementById('atores').value = r['Atores'];
+                        if (r['Impacto']) document.getElementById('impacto').value = r['Impacto'];
+                        if (r['Contornos']) document.getElementById('contornos').value = r['Contornos'];
+                        if (r['Métricas de Sucesso']) document.getElementById('metricas_sucesso').value = r['Métricas de Sucesso'];
+                        if (r['Restrições']) document.getElementById('restricoes').value = r['Restrições'];
+
+                        adicionarMsg('bot', 'Desafio salvo! Os campos foram preenchidos no formulário.');
+                    }
+
+                    document.getElementById('chat-status').textContent = 'Assistente finalizado. Desafio registrado!';
+                }
+            } catch (e) {
+                adicionarMsg('bot', 'Erro de conexão. Tente novamente.');
+            }
+            setCarregando(false);
+        }
+
+        document.getElementById('chat-send').addEventListener('click', enviarMensagem);
+        document.getElementById('chat-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') enviarMensagem();
+        });
+
+        document.getElementById('logout-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/';
+        });
+    </script>
 </body>
 </html>

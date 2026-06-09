@@ -652,6 +652,428 @@ footer a svg:hover {
 }
 
 /* ==================================================
+   PERFIL DO USUÁRIO
+================================================== */
+
+.profile-container {
+    background: linear-gradient(var(--gradiente-verde));
+    width: 100%;
+    max-width: 550px;
+    padding: 40px;
+    border: 3px solid var(--bege);
+    box-shadow: 10px 10px 30px var(--sombra-profunda);
+    border-radius: 15px;
+    color: var(--bege);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    animation: popupEntrada 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+}
+
+.profile-title {
+    text-align: center;
+    font-size: clamp(1.6rem, 4vh, 2.2rem);
+    color: var(--bege);
+    text-shadow: 3px 3px 0px var(--preto);
+    font-family: "Press Start 2P", monospace;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.credentials-card {
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 2px solid var(--bege);
+    border-radius: 10px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.credentials-card h3 {
+    color: var(--laranja);
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.credential-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(245, 229, 189, 0.3);
+}
+
+.credential-row:last-child {
+    border-bottom: none;
+}
+
+.credential-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--bege);
+    opacity: 0.8;
+}
+
+.credential-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--branco);
+    font-weight: bold;
+}
+
+.profile-forms {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-forms h3 {
+    color: var(--laranja);
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.profile-edit-form {
+    background: transparent;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    gap: 0;
+    animation: none;
+    opacity: 1;
+}
+
+.profile-input-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-input-row input {
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 2px solid var(--bege);
+    border-radius: 6px;
+    padding: 14px;
+    color: var(--branco);
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.profile-input-row input:focus {
+    border-color: var(--laranja);
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 12px rgba(218, 135, 1, 0.6);
+}
+
+.profile-input-row input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-edit-inline {
+    background: linear-gradient(var(--gradiente-laranja));
+    border: 2px solid var(--laranja);
+    color: var(--verde-escuro);
+    padding: 14px 18px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 2px 2px 4px var(--sombra-suave);
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.btn-edit-inline:hover {
+    background: linear-gradient(to bottom right, var(--gradiente-verde));
+    color: var(--bege);
+    border-color: var(--bege);
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 5px;
+}
+
+.btn-danger {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    font-weight: bold;
+    background: #dc3545;
+    border: 2px solid #dc3545;
+    color: var(--branco);
+    padding: 16px 24px;
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 10px;
+    box-shadow: 3px 3px 4px var(--sombra-suave);
+    transition: all 0.3s;
+}
+
+.btn-danger:hover {
+    background: #721c24;
+    border-color: #721c24;
+    color: var(--branco);
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.5);
+}
+
+.btn-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--bege);
+    text-decoration: underline;
+    padding: 16px 0;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+
+.btn-back:hover {
+    color: var(--laranja);
+}
+
+/* ==================================================
+   FORMULÁRIO DE REPORTAR PROBLEMA
+================================================== */
+
+.report-form {
+    background: linear-gradient(var(--gradiente-verde));
+    width: 100%;
+    max-width: 550px;
+    padding: 40px;
+    border: 3px solid var(--bege);
+    box-shadow: 10px 10px 30px var(--sombra-profunda);
+    border-radius: 15px;
+    color: var(--bege);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: popupEntrada 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+}
+
+.report-form textarea {
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 2px solid var(--bege);
+    border-radius: 6px;
+    padding: 14px;
+    color: var(--branco);
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    outline: none;
+    width: 100%;
+    resize: vertical;
+    min-height: 100px;
+    transition: all 0.3s ease-in-out;
+}
+
+.report-form textarea:focus {
+    border-color: var(--laranja);
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 12px rgba(218, 135, 1, 0.6);
+}
+
+.report-form .link {
+    align-self: center;
+}
+
+/* ==================================================
+   REPORT PAGE WRAPPER (chat + form lado a lado)
+================================================== */
+
+.report-page-wrapper {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    max-width: 1100px;
+    align-items: flex-start;
+}
+
+.report-page-wrapper .report-form {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ==================================================
+   CHATBOT WIDGET (Assistente IA)
+================================================== */
+
+#chat-widget {
+    max-width: 400px;
+}
+
+.chat-toggle-area {
+    text-align: center;
+}
+
+#chat-container {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#chat-container.ativo {
+    display: flex;
+}
+
+#chat-messages {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--bege);
+    border-radius: 10px;
+    padding: 12px;
+    height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.msg {
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 85%;
+    line-height: 1.4;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s ease;
+}
+
+.msg-bot {
+    background-color: rgba(218, 135, 1, 0.2);
+    border: 1px solid var(--laranja);
+    color: var(--bege);
+    align-self: flex-start;
+}
+
+.msg-user {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--bege);
+    color: var(--branco);
+    align-self: flex-end;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 8px;
+}
+
+.chat-input-area input {
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 2px solid var(--bege);
+    border-radius: 6px;
+    padding: 10px;
+    color: var(--branco);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.chat-input-area input:focus {
+    border-color: var(--laranja);
+}
+
+.chat-input-area input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#chat-send {
+    background: linear-gradient(var(--gradiente-laranja));
+    border: 2px solid var(--laranja);
+    color: var(--verde-escuro);
+    padding: 10px 18px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+#chat-send:hover:not(:disabled) {
+    background: linear-gradient(to bottom right, var(--gradiente-verde));
+    color: var(--bege);
+    border-color: var(--bege);
+}
+
+#chat-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chat-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--laranja);
+    text-align: center;
+    min-height: 1.2em;
+}
+
+@media (max-width: 900px) {
+    .report-page-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    #chat-widget {
+        max-width: 100%;
+    }
+    .report-page-wrapper .report-form {
+        max-width: 100%;
+    }
+}
+
+/* ==================================================
+   FEED VAZIO
+================================================== */
+
+.empty-feed {
+    width: 100%;
+    max-width: 800px;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 2px dashed var(--bege);
+    border-radius: 12px;
+    padding: 60px 30px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.empty-feed-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: var(--bege);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.empty-feed-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--bege);
+    opacity: 0.7;
+}
+
+/* ==================================================
    MEDIA QUERIES PARA RESPONSIVIDADE
 ================================================== */
 @media (max-width: 768px) {

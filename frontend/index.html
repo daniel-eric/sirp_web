@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <title>SIRP</title>
-    <link rel="icon" type="image/png" href="assets/sirp_logo_min.png">
+    <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
 <body>
     <header>
-        <a href="index.html">
-            <img src="assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
+        <a href="/landing-page">
+            <img src="/assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
         </a>
-        
+
         <div class="menu-wrapper">
             <nav id="menu-extensivel">
-                <a href="perfil.html">Perfil</a>
-                <a href="reportar.html">Reportar Problemas</a>
-                <a id="logout">Logout</a>
+                <a href="/profile">Perfil</a>
+                <a href="/problems-manager">Reportar Problemas</a>
+                <a href="/" id="logout">Logout</a>
             </nav>
-            
+
             <button id="menu" aria-label="Abrir menu" onclick="document.getElementById('menu-extensivel').classList.toggle('aberto')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -27,110 +27,81 @@
                     <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
             </button>
-            
-            <a class="cta" href="login.html" style="text-decoration: none; display: inline-block;">Entrar</a>
         </div>
     </header>
 
-    <main> 
+    <main>
         <section class="feed-section">
             <h2 class="feed-title">PROBLEMAS</h2>
 
-            <div class="search-wrapper">
+            <form action="/landing-page" method="GET" class="search-wrapper">
                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
                 <div class="search-input-container">
-                    <input type="text" placeholder="">
-                    <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="4" y1="21" x2="4" y2="14"></line>
-                        <line x1="4" y1="10" x2="4" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12" y2="3"></line>
-                        <line x1="20" y1="21" x2="20" y2="16"></line>
-                        <line x1="20" y1="12" x2="20" y2="3"></line>
-                        <line x1="1" y1="14" x2="7" y2="14"></line>
-                        <line x1="9" y1="8" x2="15" y2="8"></line>
-                        <line x1="17" y1="16" x2="23" y2="16"></line>
-                    </svg>
+                    <input type="text" name="title" placeholder="Título" value="{{ title_filter }}">
+                    <button type="submit" class="filter-icon" aria-label="Filtrar">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+
+            <div class="advanced-filters" id="advanced-filters" style="display: none; width: 100%; max-width: 800px; margin: -40px auto 30px;">
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <input type="text" name="areas" form="filter-form" placeholder="Áreas" value="{{ areas_filter }}" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.25); border: 2px solid var(--bege); border-radius: 6px; color: #fff; font-family: 'Space Mono', monospace;">
+                    <input type="text" name="author" form="filter-form" placeholder="Autor" value="{{ author_filter }}" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.25); border: 2px solid var(--bege); border-radius: 6px; color: #fff; font-family: 'Space Mono', monospace;">
+                    <input type="text" name="time" form="filter-form" placeholder="Data (DD/MM/AAAA)" value="{{ time_filter }}" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.25); border: 2px solid var(--bege); border-radius: 6px; color: #fff; font-family: 'Space Mono', monospace;">
                 </div>
             </div>
 
-            <!-- Card da Pasta Interativa -->
+            <form id="filter-form" action="/landing-page" method="GET" style="display: none;">
+                <input type="text" name="title" value="{{ title_filter }}">
+            </form>
+
+            {% for problem in problems %}
             <div class="folder" onclick="this.classList.toggle('aberta')">
                 <div class="folder-tab"></div>
                 <div class="folder-back">
-                    
-                    <!-- Folha Branca Interna -->
                     <div class="folder-paper">
-                        <div class="paper-field">CONTEXTO:</div>
-                        <div class="paper-field">ATORES:</div>
-                        <div class="paper-field">IMPACTO:</div>
-                        <div class="paper-field">CONTORNOS:</div>
-                        <div class="paper-field">MÉTRICA DE SUCESSO:</div>
-                        <div class="paper-field">RESTRIÇÕES:</div>
-                        <div class="paper-footer">JEZREEL DAVID | jezreel.david@ufrpe.br</div>
+                        <div class="paper-field">CONTEXTO: {{ problem.contexto }}</div>
+                        <div class="paper-field">ÁREAS: {{ problem.areas }}</div>
+                        <div class="paper-field">IMPACTO: {{ problem.impacto if problem.impacto else 'A ser detalhado pelos colaboradores.' }}</div>
+                        <div class="paper-field">CONTORNOS: {{ problem.contornos if problem.contornos else 'Em discussão.' }}</div>
+                        <div class="paper-field">MÉTRICA DE SUCESSO: {{ problem.metricas_sucesso if problem.metricas_sucesso else 'A definir.' }}</div>
+                        <div class="paper-field">RESTRIÇÕES: {{ problem.restricoes if problem.restricoes else 'Abertas a contribuições.' }}</div>
+                        <div class="paper-footer">{{ problem.autor }} | {{ problem.data_criacao }}</div>
                     </div>
 
-                    <!-- Frente da Pasta (Aba que desce) -->
                     <div class="folder-front">
                         <div class="folder-front-content">
-                            <h2 class="folder-title">CLIENTES ENTEDIADOS NA FILA DA LANCHONETE</h2>
-                            <p class="folder-tags">SISTEMAS DE INFORMAÇÃO | GASTRONOMIA | MARKETING</p>
+                            <h2 class="folder-title">{{ problem.titulo }}</h2>
+                            <p class="folder-tags">{{ problem.areas }}</p>
                         </div>
-                    </div>
-
-                    <!-- Polaroid Flutuante -->
-                    <div class="polaroid">
-                        <!-- Imagem de exemplo usando Unsplash -->
-                        <img src="assets/ru_03 1.png" alt="Exterior da lanchonete">
-                        <svg class="paperclip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                        </svg>
                     </div>
                 </div>
             </div>
-
-            <div class="folder" onclick="this.classList.toggle('aberta')">
-                <div class="folder-tab"></div>
-                <div class="folder-back">
-                    
-                    <!-- Folha Branca Interna -->
-                    <div class="folder-paper">
-                        <div class="paper-field">CONTEXTO: Apaonciasp apicnapisncipanscpansoc cpinapcins pcans acpioa cios c apicnapiscn oia cpia c api cspi cp as cabspibc aiovbiavbk</div>
-                        <div class="paper-field">ATORES: IAnc ipancoanscpoianspoa</div>
-                        <div class="paper-field">IMPACTO: cakc naicnpianca piancipanipsn apnaipncapinaspcnaipefjaocma naipcnaesicna piancfpiqe ncpiaenn qipnipcenas</div>
-                        <div class="paper-field">CONTORNOS:acoubascouabcoian ac aoicnaoisncs aiocnaiosn</div>
-                        <div class="paper-field">MÉTRICA DE SUCESSO: cjoa cinaip naepionqpapicnaeipnc inacpiane</div>
-                        <div class="paper-field">RESTRIÇÕES: acinaicnaipncpaencpaein aincopinapinecpaincipanapcnpaiencpiancpiancpiancp aifncapi ncienfpiaencpe iandpiaencpanepcinaepi iadncpiaencpiaenc naipcnapienipancapien piaenfpian pianf apinfpiaen fpiaenfpiqe na</div>
-                        <div class="paper-footer">DANIEL ERIC | daniel.eric@ufrpe.br</div>
-                    </div>
-
-                    <!-- Frente da Pasta (Aba que desce) -->
-                    <div class="folder-front">
-                        <div class="folder-front-content">
-                            <h2 class="folder-title">RIO CAPIBARIBE EXTREMAMENTE POLUÍDO</h2>
-                            <p class="folder-tags">ENGENHARIA DE PESCA</p>
-                        </div>
-                    </div>
-
-                    <!-- Polaroid Flutuante -->
-                    <div class="polaroid">
-                        <!-- Imagem de exemplo usando Unsplash -->
-                        <img src="assets/rio_capibaribe.webp" alt="Rio Capibaribe Poluído">
-                        <svg class="paperclip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                        </svg>
-                    </div>
-                </div>
+            {% else %}
+            <div class="empty-feed">
+                <p class="empty-feed-text">Nenhum problema encontrado.</p>
+                <p class="empty-feed-sub">Seja o primeiro a reportar um problema!</p>
             </div>
-            
+            {% endfor %}
+
         </section>
     </main>
 
-    <!-- Botão de Ação Flutuante (Megafone) -->
-    <a href="reportar.html" class="fab">
+    <a href="/problems-manager" class="fab">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
@@ -152,8 +123,29 @@
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
             </a>
-        </div>    
+        </div>
     </footer>
-    
+
+    <script>
+        document.querySelector('.search-input-container .filter-icon').addEventListener('click', function(e) {
+            e.preventDefault();
+            var filters = document.getElementById('advanced-filters');
+            if (filters.style.display === 'none') {
+                filters.style.display = 'block';
+            } else {
+                document.getElementById('filter-form').submit();
+            }
+        });
+
+        document.getElementById('logout').addEventListener('click', function(e) {
+            e.preventDefault();
+            fetch('/', {
+                method: 'GET',
+                credentials: 'same-origin'
+            }).then(function() {
+                window.location.href = '/';
+            });
+        });
+    </script>
 </body>
 </html>

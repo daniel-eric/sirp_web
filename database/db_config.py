@@ -71,24 +71,30 @@ def db_user_init():
         print(f"💥 Erro imprevisto na inicialização da tabela 'users': {e}")
 
 
-def db_problems_init():
+def db_desafios_init():
     try:
         with DatabaseConnection() as db:
             db.execute('''
-                CREATE TABLE IF NOT EXISTS problems (
+                CREATE TABLE IF NOT EXISTS desafios (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    title TEXT NOT NULL,
-                    description TEXT NOT NULL,
+                    titulo TEXT NOT NULL,
+                    autor TEXT NOT NULL,
+                    contato TEXT,
                     areas TEXT NOT NULL,
-                    authors TEXT NOT NULL,
-                    time TEXT NOT NULL
+                    contexto TEXT,
+                    atores TEXT,
+                    impacto TEXT,
+                    contornos TEXT,
+                    metricas_sucesso TEXT,
+                    restricoes TEXT,
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             ''')
     except sqlite3.OperationalError as e:
-        print(f"🛑 Erro ao tentar criar a tabela 'problems': {e}")
+        print(f"Erro ao criar tabela 'desafios': {e}")
     except Exception as e:
-        print(f"💥 Erro imprevisto na inicialização da tabela 'problems': {e}")
+        print(f"Erro inesperado na tabela 'desafios': {e}")
 
 
 db_user_init()
-db_problems_init()
+db_desafios_init()

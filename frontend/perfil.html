@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>SIRP</title>
-    <link rel="icon" type="image/png" href="assets/sirp_logo_min.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>SIRP - Perfil</title>
+    <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
 <body>
     <header>
-        <a href="index.html">
-            <img src="assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
+        <a href="/landing-page">
+            <img src="/assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
         </a>
-        
+
         <div class="menu-wrapper">
             <nav id="menu-extensivel">
-                <a href="perfil.html">Perfil</a>
-                <a href="reportar.html">Reportar Problemas</a>
-                <a id="logout">Logout</a>
+                <a href="/profile">Perfil</a>
+                <a href="/problems-manager">Reportar Problemas</a>
+                <a href="/" id="logout-link">Logout</a>
             </nav>
-            
+
             <button id="menu" aria-label="Abrir menu" onclick="document.getElementById('menu-extensivel').classList.toggle('aberto')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -27,13 +27,81 @@
                     <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
             </button>
-            
-            <a class="cta" href="login.html" style="text-decoration: none; display: inline-block;">Entrar</a>
         </div>
     </header>
 
-    <main> 
-       
+    <main>
+        <div class="profile-container">
+            <h2 class="profile-title">Perfil</h2>
+
+            {% if request.query_params.get('erro') %}
+            <div id="mensagem-erro" class="visivel">
+                &#9888;&#65039; Erro ao atualizar dados. Tente novamente.
+            </div>
+            {% endif %}
+
+            <section class="credentials-card">
+                <h3>Suas Credenciais</h3>
+                <div class="credential-row">
+                    <span class="credential-label">Nome de Usuário:</span>
+                    <span class="credential-value">{{ user.username }}</span>
+                </div>
+                <div class="credential-row">
+                    <span class="credential-label">Email:</span>
+                    <span class="credential-value">{{ user.email }}</span>
+                </div>
+                <div class="credential-row">
+                    <span class="credential-label">Telefone:</span>
+                    <span class="credential-value">{{ user.tellNum }}</span>
+                </div>
+                <div class="credential-row">
+                    <span class="credential-label">Senha:</span>
+                    <span class="credential-value">********</span>
+                </div>
+            </section>
+
+            <section class="profile-forms">
+                <h3>Modificar Informações</h3>
+
+                <form action="/api/profile/update-username" method="POST" class="profile-edit-form">
+                    <div class="input-group">
+                        <label for="new-username">Novo Nome de Usuário:</label>
+                        <div class="profile-input-row">
+                            <input type="text" id="new-username" name="username" placeholder="Digite o novo username" required disabled>
+                            <button type="button" class="btn-edit-inline" onclick="toggleEditField('new-username', this)">&#9998;</button>
+                        </div>
+                    </div>
+                </form>
+
+                <form action="/api/profile/update-tellNum" method="POST" class="profile-edit-form">
+                    <div class="input-group">
+                        <label for="new-tellNum">Novo Telefone:</label>
+                        <div class="profile-input-row">
+                            <input type="text" id="new-tellNum" name="tellNum" placeholder="Digite o novo telefone" required disabled>
+                            <button type="button" class="btn-edit-inline" onclick="toggleEditField('new-tellNum', this)">&#9998;</button>
+                        </div>
+                    </div>
+                </form>
+
+                <form action="/api/profile/update-password" method="POST" class="profile-edit-form">
+                    <div class="input-group">
+                        <label for="new-password">Nova Senha:</label>
+                        <div class="profile-input-row">
+                            <input type="password" id="new-password" name="password" placeholder="Digite a nova senha" required disabled>
+                            <button type="button" class="btn-edit-inline" onclick="toggleEditField('new-password', this)">&#9998;</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section class="profile-actions">
+                <form action="/api/profile/delete-account" method="POST" onsubmit="return confirm('&#9888;&#65039; Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita.')">
+                    <button type="submit" class="btn-danger">Deletar Conta</button>
+                </form>
+
+                <a href="/landing-page" class="btn-back">Voltar</a>
+            </section>
+        </div>
     </main>
 
     <footer>
@@ -51,9 +119,27 @@
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
             </a>
-        </div>    
+        </div>
     </footer>
-    
-    
+
+    <script>
+        function toggleEditField(fieldId, button) {
+            var input = document.getElementById(fieldId);
+            if (input.disabled) {
+                input.disabled = false;
+                input.focus();
+                button.innerHTML = '&#10003;';
+                button.style.color = '#25d366';
+                button.parentElement.parentElement.parentElement.onsubmit = null;
+            } else {
+                button.closest('form').submit();
+            }
+        }
+
+        document.getElementById('logout-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/';
+        });
+    </script>
 </body>
 </html>
