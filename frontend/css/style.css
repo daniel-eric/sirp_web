@@ -3,11 +3,11 @@
     --gradiente-verde: to bottom right, var(--verde-escuro), rgb(32, 41, 8);
     --bege: rgb(245, 229, 189);
     --laranja: rgb(218, 135, 1);
-    --gradiente-laranja: rgb(252, 184, 68),var(--laranja);
+    --gradiente-laranja: rgb(252, 184, 68), var(--laranja);
     --branco: rgb(255, 255, 255);
-    --sombra-suave: rgba(0,0,0,0.2);
-    --preto: rgb(0,0,0);
-    --sombra-profunda: rgba(0,0,0,0.5);
+    --sombra-suave: rgba(0, 0, 0, 0.2);
+    --preto: rgb(0, 0, 0);
+    --sombra-profunda: rgba(0, 0, 0, 0.5);
     --cinza-profundo: rgb(39, 37, 37);
     --gradiente-cinza: to bottom left, rgb(20, 19, 19), var(--cinza-profundo);
 }
@@ -22,8 +22,8 @@ body {
     background: linear-gradient(var(--gradiente-cinza));
     min-height: 100vh;
     display: flex;
-    flex-direction: column; 
-    padding-top: 15vh; 
+    flex-direction: column;
+    padding-top: 15vh;
 }
 
 /* --- HEADER E MENU EXTENSÍVEL --- */
@@ -32,10 +32,12 @@ header {
     box-shadow: 4px 4px 4px var(--sombra-suave);
     padding: 10px 20px;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     position: fixed;
-    top: 0; left: 0; width: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
     z-index: 100;
 }
 
@@ -53,15 +55,17 @@ header {
 #menu-extensivel {
     display: flex;
     gap: 20px;
-    max-width: 0;        /* Escondido por padrão */
-    opacity: 0;          
-    overflow: hidden;    
-    white-space: nowrap; 
+    max-width: 0;
+    /* Escondido por padrão */
+    opacity: 0;
+    overflow: hidden;
+    white-space: nowrap;
     transition: max-width 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 }
 
 #menu-extensivel.aberto {
-    max-width: 400px;    /* Expande para a esquerda */
+    max-width: 400px;
+    /* Expande para a esquerda */
     opacity: 1;
 }
 
@@ -93,41 +97,59 @@ header {
 
 /* --- MAIN E LOGIN CARD --- */
 main {
-    flex-grow: 1; 
+    flex-grow: 1;
     display: flex;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
     padding: 20px;
 }
 
 form {
     background: linear-gradient(var(--gradiente-verde));
     width: 100%;
-    max-width: 450px; 
+    max-width: 450px;
     padding: 40px;
     border: 3px solid var(--bege);
     box-shadow: 10px 10px 30px var(--sombra-profunda);
-    border-radius: 15px; 
+    border-radius: 15px;
     color: var(--bege);
     display: flex;
-    flex-direction: column; 
-    gap: 15px; 
+    flex-direction: column;
+    gap: 15px;
     animation: popupEntrada 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     opacity: 0;
 }
 
 @keyframes popupEntrada {
-    from { opacity: 0; transform: translateY(40px) scale(0.92); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: "Press Start 2P", monospace;
     text-transform: uppercase;
 }
 
-h1 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: 2vw; }
-h3 { font-size: clamp(1.3rem, 4vw, 2rem); }
+h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 2vw;
+}
+
+h3 {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+}
 
 form h2 {
     text-align: center;
@@ -137,7 +159,8 @@ form h2 {
     margin-bottom: 10px;
 }
 
-p, label {
+p,
+label {
     font-family: 'Space Mono', 'Consolas', monospace;
     font-size: 1rem;
     line-height: 1.5;
@@ -219,7 +242,8 @@ p, label {
     color: var(--bege);
 }
 
-.cta:disabled, #menu:disabled {
+.cta:disabled,
+#menu:disabled {
     border-color: #555555 !important;
     color: #555555 !important;
     cursor: not-allowed;
@@ -259,56 +283,69 @@ p, label {
 }
 
 @keyframes tremer {
-    0%, 100% { transform: translateX(0); }
-    25%, 75% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25%,
+    75% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
 }
 
 
 footer {
     background: linear-gradient(var(--gradiente-verde));
     color: var(--bege);
-    padding: 3vh 2vh; 
+    padding: 3vh 2vh;
     display: flex;
-    flex-wrap: wrap; 
-    justify-content: center; 
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    gap: 20px; 
+    gap: 20px;
 }
 
 #footer-contact {
     width: 30vw;
     min-width: 250px;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
 }
 
 footer a svg {
-    stroke: var(--bege); 
-    transition: stroke 0.3s ease; 
+    stroke: var(--bege);
+    transition: stroke 0.3s ease;
 }
 
 footer a svg:hover {
-    stroke: var(--laranja); 
+    stroke: var(--laranja);
 }
 
 #copy {
     font-size: 0.7rem;
-    width: 100%; 
-    text-align: center; 
+    width: 100%;
+    text-align: center;
     display: block;
 }
 
 #mensagem-sms {
-    background-color: #25d366; /* Verde estilo WhatsApp/SMS */
+    background-color: #25d366;
+    /* Verde estilo WhatsApp/SMS */
     color: var(--branco);
     padding: 10px;
     border-radius: 5px;
     text-align: center;
     font-size: 0.85rem;
     font-family: 'Space Mono', monospace;
-    display: none; /* Escondido por padrão */
+    display: none;
+    /* Escondido por padrão */
     margin-top: 15px;
 }
 
@@ -318,13 +355,14 @@ footer a svg:hover {
 }
 
 @keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(-10px); 
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
     }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -347,14 +385,15 @@ footer a svg:hover {
     font-family: 'Press Start 2P', monospace;
     font-size: clamp(1.8rem, 5vw, 2.8rem);
     /* Sombra com tom marrom estilo pixel art */
-    text-shadow: -2px -2px 0 #574426, 2px -2px 0 #574426, -2px 2px 0 #574426, 2px 2px 0 #574426, 6px 6px 0px rgba(0,0,0,0.6); 
+    text-shadow: -2px -2px 0 #574426, 2px -2px 0 #574426, -2px 2px 0 #574426, 2px 2px 0 #574426, 6px 6px 0px rgba(0, 0, 0, 0.6);
     margin-bottom: 40px;
     text-align: center;
     letter-spacing: 4px;
 }
 
 .search-wrapper {
-    background-color: #0d4a25; /* Fundo verde escuro do search */
+    background-color: #0d4a25;
+    /* Fundo verde escuro do search */
     border-radius: 40px;
     padding: 8px 15px 8px 25px;
     display: flex;
@@ -362,7 +401,7 @@ footer a svg:hover {
     gap: 15px;
     width: 100%;
     max-width: 800px;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 15px var(--sombra-suave);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5), 0 5px 15px var(--sombra-suave);
     margin-bottom: 70px;
 }
 
@@ -426,11 +465,12 @@ footer a svg:hover {
     position: absolute;
     top: -40px;
     left: 0;
-    box-shadow: inset 2px 2px 5px rgba(255,255,255,0.4);
+    box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.4);
 }
 
 .folder-back {
-    background-color: #dcb87e; /* Bege mais escuro por dentro */
+    background-color: #dcb87e;
+    /* Bege mais escuro por dentro */
     border-radius: 0 15px 15px 15px;
     height: 280px;
     width: 100%;
@@ -445,9 +485,10 @@ footer a svg:hover {
     top: 20px;
     left: 20px;
     right: 20px;
-    bottom: 20px; /* Preenche a altura da pasta */
+    bottom: 20px;
+    /* Preenche a altura da pasta */
     border-radius: 8px;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.15);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.15);
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -458,7 +499,8 @@ footer a svg:hover {
     gap: 18px;
     font-family: 'Space Mono', monospace;
     color: var(--preto);
-    pointer-events: none; /* Inativo enquanto fechado */
+    pointer-events: none;
+    /* Inativo enquanto fechado */
 }
 
 .paper-field {
@@ -482,7 +524,10 @@ footer a svg:hover {
     background-color: var(--bege);
     border-radius: 0 15px 15px 15px;
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 3;
     padding: 40px;
     display: flex;
@@ -491,7 +536,7 @@ footer a svg:hover {
     /* A mágica acontece no clip-path, cortando a frente da pasta na transição */
     transition: clip-path 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    box-shadow: inset 2px 2px 10px rgba(255,255,255,0.5);
+    box-shadow: inset 2px 2px 10px rgba(255, 255, 255, 0.5);
 }
 
 .folder-front-content {
@@ -521,7 +566,7 @@ footer a svg:hover {
     position: absolute;
     background: var(--branco);
     padding: 10px 10px 35px 10px;
-    box-shadow: 2px 5px 20px rgba(0,0,0,0.4);
+    box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.4);
     z-index: 4;
     width: 200px;
     top: 50px;
@@ -552,7 +597,8 @@ footer a svg:hover {
    ESTADO ABERTO DA PASTA
 ================================================== */
 .folder.aberta .folder-back {
-    height: 500px; /* Pasta cresce revelando a folha inteira */
+    height: 500px;
+    /* Pasta cresce revelando a folha inteira */
 }
 
 .folder.aberta .folder-paper {
@@ -577,7 +623,7 @@ footer a svg:hover {
     right: 20px;
     transform: rotate(4deg);
     width: 180px;
-    box-shadow: 2px 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -618,12 +664,12 @@ footer a svg:hover {
 footer {
     background: linear-gradient(var(--gradiente-verde));
     color: var(--bege);
-    padding: 3vh 2vh; 
+    padding: 3vh 2vh;
     display: flex;
-    flex-wrap: wrap; 
-    justify-content: center; 
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    gap: 20px; 
+    gap: 20px;
     width: 100%;
 }
 
@@ -631,23 +677,23 @@ footer {
     width: 30vw;
     min-width: 250px;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
 }
 
 footer a svg {
-    stroke: var(--bege); 
-    transition: stroke 0.3s ease; 
+    stroke: var(--bege);
+    transition: stroke 0.3s ease;
 }
 
 footer a svg:hover {
-    stroke: var(--laranja); 
+    stroke: var(--laranja);
 }
 
 #copy {
     font-size: 0.7rem;
-    width: 100%; 
-    text-align: center; 
+    width: 100%;
+    text-align: center;
     display: block;
 }
 
@@ -655,34 +701,372 @@ footer a svg:hover {
    MEDIA QUERIES PARA RESPONSIVIDADE
 ================================================== */
 @media (max-width: 768px) {
-    .folder-front-content { max-width: 100%; }
-    
+    .folder-front-content {
+        max-width: 100%;
+    }
+
     .polaroid {
         width: 120px;
         right: 10px;
         top: 30px;
         padding: 5px 5px 20px 5px;
     }
-    .polaroid img { height: 90px; }
-    
+
+    .polaroid img {
+        height: 90px;
+    }
+
     .folder.aberta .polaroid {
         width: 110px;
         top: 60px;
         right: 10px;
     }
-    
+
     .paperclip {
-        width: 25px; height: 40px;
-        top: -15px; right: 10px;
+        width: 25px;
+        height: 40px;
+        top: -15px;
+        right: 10px;
     }
-    
+
     .folder.aberta .folder-back {
         height: 450px;
     }
-    
+
     .fab {
-        bottom: 20px; right: 20px;
-        width: 55px; height: 55px;
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
     }
-    .fab svg { width: 25px; height: 25px; }
+
+    .fab svg {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+:root {
+    --verde-escuro: rgb(53, 58, 36);
+    --gradiente-verde: to bottom right, var(--verde-escuro), rgb(32, 41, 8);
+    --bege: rgb(245, 229, 189);
+    --laranja: rgb(218, 135, 1);
+    --gradiente-laranja: rgb(252, 184, 68), var(--laranja);
+    --branco: rgb(255, 255, 255);
+    --sombra-suave: rgba(0, 0, 0, 0.2);
+    --preto: rgb(0, 0, 0);
+    --sombra-profunda: rgba(0, 0, 0, 0.5);
+    --cinza-profundo: rgb(39, 37, 37);
+    --gradiente-cinza: to bottom left, rgb(20, 19, 19), var(--cinza-profundo);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(var(--gradiente-cinza));
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 15vh;
+}
+
+/* =========================================
+   CHAT SIRP - ESTILOS DA INTERFACE
+   ========================================= */
+
+.chat-container {
+    background: var(--cinza-profundo);
+    border-radius: 12px;
+    border: 1px solid var(--verde-escuro);
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    box-shadow: 0 10px 30px var(--sombra-profunda);
+    overflow: hidden;
+}
+
+.chat-header {
+    background: linear-gradient(var(--gradiente-verde));
+    color: var(--bege);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--laranja);
+}
+
+.status-badge {
+    font-size: 0.8rem;
+    background: rgba(43, 76, 31, 0.5);
+    padding: 4px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--bege);
+}
+
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* --- Bolhas de Mensagem --- */
+.mensagem {
+    max-width: 85%;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.mensagem.user {
+    align-self: flex-end;
+}
+
+.mensagem.bot {
+    align-self: flex-start;
+}
+
+.mensagem .texto {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* Mensagem do Usuário (Laranja) */
+.mensagem.user .texto {
+    background: linear-gradient(var(--gradiente-laranja));
+    color: var(--preto);
+    border-bottom-right-radius: 2px;
+    box-shadow: 0 4px 10px rgba(218, 135, 1, 0.2);
+}
+
+/* Mensagem do Bot (Verde/Bege) */
+.mensagem.bot .texto {
+    background: var(--verde-escuro);
+    color: var(--bege);
+    border-bottom-left-radius: 2px;
+    border: 1px solid rgba(245, 229, 189, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Área de Input e Botões --- */
+.chat-input-area {
+    background: var(--cinza-profundo);
+    padding: 15px;
+    border-top: 1px solid var(--verde-escuro);
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#usuarioInput {
+    flex: 1;
+    background: #111;
+    border: 1px solid var(--verde-escuro);
+    color: var(--branco);
+    padding: 12px 15px;
+    border-radius: 8px;
+    resize: none;
+    font-family: inherit;
+    font-size: 1rem;
+    min-height: 50px;
+    transition: 0.3s;
+}
+
+#usuarioInput:focus {
+    outline: none;
+    border-color: var(--laranja);
+    box-shadow: 0 0 8px rgba(218, 135, 1, 0.3);
+}
+
+#usuarioInput:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chat-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.media-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.media-btn {
+    color: var(--bege);
+    cursor: pointer;
+    padding: 12px;
+    background: var(--verde-escuro);
+    border-radius: 8px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.media-btn:hover {
+    background: var(--laranja);
+    color: var(--preto);
+}
+
+.btn-send {
+    background: var(--laranja);
+    color: var(--preto);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-send:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(218, 135, 1, 0.4);
+}
+
+.btn-send:disabled {
+    background: #555;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* --- Preview de Mídia no Input --- */
+.media-preview-box {
+    display: flex; /* Oculto via JS quando vazio */
+    align-items: center;
+    gap: 15px;
+    background: #111;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px dashed var(--verde-escuro);
+}
+
+.media-preview-box img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.media-status-text {
+    color: var(--bege);
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.btn-remover {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.2s;
+}
+
+.btn-remover:hover {
+    color: #ff1a1a;
+    transform: scale(1.1);
+}
+
+/* Animação suave para as mensagens surgindo */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividade Básica pro Chat */
+@media (max-width: 768px) {
+    .chat-container {
+        height: 70vh;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    .chat-actions {
+        flex-direction: column;
+    }
+    .input-wrapper {
+        align-items: flex-end;
+    }
+}
+
+/* =========================================
+   ANIMAÇÃO DE LOADING E RESUMO NO CHAT
+   ========================================= */
+
+.typing-indicator {
+    display: none; /* Escondido por padrão */
+    align-items: center;
+    gap: 6px;
+    padding: 12px 18px;
+    background: var(--verde-escuro);
+    border-radius: 12px;
+    border-bottom-left-radius: 2px;
+    width: fit-content;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--bege);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+ 
+/* Mensagens de Erro/Aviso */
+.mensagem.erro .texto {
+    background: #3a1515;
+    color: #ffb3b3;
+    border-left: 4px solid #ff4d4d;
+    border-bottom-left-radius: 2px;
+}
+
+/* Tabela de Resumo gerada no Chat */
+.tabela-resumo-chat {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px dashed var(--laranja);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+.tabela-resumo-chat strong {
+    color: var(--laranja);
+    display: inline-block;
+    width: 100%;
+    margin-top: 5px;
 }

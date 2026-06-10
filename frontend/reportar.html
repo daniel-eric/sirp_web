@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>SIRP - Reportar</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Reportar</title>
     <link rel="icon" type="image/png" href="assets/sirp_logo_min.png">
 </head>
 <body>
@@ -27,13 +28,132 @@
                     <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
             </button>
-            
-            <a class="cta" href="login.html" style="text-decoration: none; display: inline-block;">Entrar</a>
         </div>
     </header>
 
-    <main> 
-       
+    <main class="main-container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2><i class="fa-solid fa-robot"></i> Analista Técnico SIRP</h2>
+                <span class="status-badge">Conexão Segura</span>
+            </div>
+            
+            <div class="chat-box" id="chatBox">
+                </div>
+
+                <div id="typingIndicator" class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            <div class="chat-input-area">
+                <div id="mediaPreviewContainer" class="media-preview-box">
+                    <img id="imgThumbnail" src="" alt="Miniatura" style="display: none;">
+                    <i id="videoIcon" class="fa-solid fa-file-video" style="display: none;"></i>
+                    <div id="mediaUploadStatus" class="media-status-text">Processando...</div>
+                    <button type="button" id="btnRemoverMidia" class="btn-remover">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+
+                <div class="input-wrapper">
+                    <textarea id="usuarioInput" rows="1" placeholder="Digite seu relato aqui..." required></textarea>
+                    
+                    <div class="chat-actions">
+                        <div class="media-actions">
+                            <label class="media-btn" title="Anexar Imagem">
+                                <i class="fa-solid fa-camera"></i>
+                                <input type="file" id="imgUpload" accept="image/*" style="display: none;">
+                            </label>
+                            <label class="media-btn" title="Anexar Vídeo">
+                                <i class="fa-solid fa-video"></i>
+                                <input type="file" id="vidUpload" accept="video/*" style="display: none;">
+                            </label>
+                        </div>
+                        
+                        <button id="btnEnviar" class="btn-send" onclick="enviarMensagem()" title="Enviar Mensagem">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="fichaPainel" class="folder" style="display: none;">
+    <div class="folder-tab"></div>
+    <div class="folder-back"></div>
+    
+    <div class="folder-paper">
+        <div class="dossie-content">
+            <div class="dossie-row">
+                <span class="label">CONTEXTO DO DESAFIO:</span>
+                <span id="txtContexto" class="dotted-line">Aguardando dados...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">ATORES ENVOLVIDOS:</span>
+                <span id="txtAtores" class="dotted-line">Aguardando dados...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">IMPACTO OPERACIONAL:</span>
+                <span id="txtImpacto" class="dotted-line">Aguardando dados...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">CONTORNOS DO PROBLEMA:</span>
+                <span id="txtContornos" class="dotted-line">Aguardando dados...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">MÉTRICAS DE SUCESSO:</span>
+                <span id="txtMetrica" class="dotted-line">Aguardando dados...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">RESTRIÇÕES / RISCOS:</span>
+                <span id="txtRestricoes" class="dotted-line">Aguardando análise...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">AUTOR:</span>
+                <span id="txtAutor" class="dotted-line">Aguardando identificação...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">CONTATO:</span>
+                <span id="txtContato" class="dotted-line">Aguardando canal...</span>
+            </div>
+            <div class="dossie-row">
+                <span class="label">ÁREAS AFETADAS:</span>
+                <span id="txtAreas" class="dotted-line">Aguardando mapeamento...</span>
+            </div>
+
+            <div class="zona-upload-final" id="blocoUploadFinal" style="display: none; margin-top: 20px;">
+                <p><i class="fa-solid fa-paperclip"></i> Deseja anexar alguma imagem ou vídeo comprobatório?</p>
+                <input type="file" id="inputArquivoVisual" accept="image/*,video/*">
+                
+                <div class="barra-progresso-container" id="barraConversaoContainer" style="display: none; margin-top: 10px;">
+                    <div class="barra-progresso-fill" style="width: 100%; background: var(--laranja); height: 5px; animation: progress 2.5s ease;"></div>
+                </div>
+                
+                <div class="preview-resultado-box" id="previewConvertidoBox" style="display: none; margin-top: 10px;"></div>
+            </div>
+
+            <div class="carimbo-final-dinamico" id="carimboCaso" style="display: none; color: green; font-weight: bold; text-align: center; margin: 15px 0;">RESOLVIDO</div>
+            
+            <button class="cta" id="btnSalvarBanco" style="width: 100%; margin-top: 20px;">✓ Publicar Rascunho no Feed</button>
+        </div>
+        <div class="paper-footer">DOCUMENTO GERADO PELO SISTEMA SIRP</div>
+    </div>
+
+    <div class="folder-front">
+        <div class="folder-front-content">
+            <div class="folder-title">DOSSIÊ<br>TÉCNICO</div>
+            <div class="folder-tags">#SIRP #ANÁLISE</div>
+        </div>
+    </div>
+
+    <div class="polaroid">
+        <i class="fa-solid fa-paperclip paperclip"></i>
+        <img id="dossieImagem" src="https://via.placeholder.com/200x150/353a24/f5e5bd?text=Sem+Imagem" alt="Evidência do Caso">
+    </div>
+</div>
+    
     </main>
 
     <footer>
@@ -41,19 +161,229 @@
         <div id="footer-contact">
             <h3>Entre em Contato</h3>
             <a href="mailto:jezreel.david@ufrpe.br">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
             </a>
             <a href="tel:+5581983606736">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
             </a>
-        </div>    
+        </div>
     </footer>
-    
-    
+
+    <script>
+    const chatBox = document.getElementById('chatBox');
+    const usuarioInput = document.getElementById('usuarioInput');
+    const btnEnviar = document.getElementById('btnEnviar');
+    const typingIndicator = document.getElementById('typingIndicator');
+
+    // Garante que o indicador inicie totalmente oculto
+    if (typingIndicator) typingIndicator.style.display = 'none';
+
+    // 1. INICIALIZAÇÃO: Reseta a memória da IA ao carregar a página
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('/api/reset', { method: 'POST' });
+            const data = await response.json();
+            adicionarMensagemBot(data.mensagem_inicial);
+        } catch (error) {
+            adicionarMensagemErro("❌ Falha ao conectar com os servidores do SIRP. Verifique sua conexão.");
+        }
+    });
+
+    function rolarParaFinal() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // 2. FUNÇÕES DE RENDERIZAÇÃO DAS BOLHAS
+    function adicionarMensagemUsuario(texto) {
+        const html = `
+            <div class="mensagem user" style="text-align: right; margin-bottom: 10px; color: var(--laranja);">
+                <div class="texto"><strong>Você:</strong> ${texto}</div>
+            </div>`;
+        typingIndicator.insertAdjacentHTML('beforebegin', html);
+        rolarParaFinal();
+    }
+
+    function adicionarMensagemBot(texto, dossieInfo = null, finalizado = false) {
+        let tabelaHtml = "";
+        
+        // SÓ MOSTRA A TABELA NO CHAT SE O FLUXO EM PYTHON RETORNAR FINALIZADO
+        if (finalizado && dossieInfo) {
+            tabelaHtml = `
+            <div class="tabela-resumo-chat" style="margin-top: 12px;">
+                <strong>Contexto:</strong> ${dossieInfo.Contexto || '-'} <br>
+                <strong>Atores:</strong> ${dossieInfo.Atores || '-'} <br>
+                <strong>Impacto:</strong> ${dossieInfo.Impacto || '-'} <br>
+                <strong>Contornos:</strong> ${dossieInfo.Contornos || dossieInfo["Contornos do Problema"] || '-'} <br>
+                <strong>Métricas:</strong> ${dossieInfo["Métricas de Sucesso"] || dossieInfo.Metricas || dossieInfo.Metrica || '-'} <br>
+                <strong>Restrições:</strong> ${dossieInfo.Restrições || dossieInfo.Restricoes || '-'} <br>
+                <strong>Autor:</strong> ${dossieInfo.Autor || '-'} <br>
+                <strong>Contato:</strong> ${dossieInfo.Contato || '-'} <br>
+                <strong>Áreas:</strong> ${dossieInfo.Áreas || dossieInfo.Areas || dossieInfo["Áreas Afetadas"] || '-'}
+            </div>`;
+        }
+
+        const html = `
+            <div class="mensagem bot" style="text-align: left; margin-bottom: 10px; color: var(--bege);">
+                <div class="texto"><strong>Analista SIRP:</strong> ${texto} ${tabelaHtml}</div>
+            </div>`;
+        typingIndicator.insertAdjacentHTML('beforebegin', html);
+        rolarParaFinal();
+    }
+
+    function adicionarMensagemErro(texto) {
+        const html = `
+            <div class="mensagem erro" style="text-align: left; margin-bottom: 10px;">
+                <div class="texto"><i class="fa-solid fa-triangle-exclamation"></i> ${texto}</div>
+            </div>`;
+        typingIndicator.insertAdjacentHTML('beforebegin', html);
+        rolarParaFinal();
+    }
+
+    // 3. ENVIO DE MENSAGENS E INTEGRAÇÃO COM BACKEND
+    async function enviarMensagem() {
+        const texto = usuarioInput.value.trim();
+        if (!texto) return;
+
+        adicionarMensagemUsuario(texto);
+
+        // Ativa estados de processamento (Bolinhas pulando)
+        usuarioInput.value = "";
+        usuarioInput.disabled = true;
+        btnEnviar.disabled = true;
+        typingIndicator.style.display = 'flex';
+        rolarParaFinal();
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensagem: texto })
+            });
+
+            const dados = await response.json();
+            typingIndicator.style.display = 'none';
+
+            if (response.status !== 200 || dados.erro) {
+                adicionarMensagemErro(dados.erro || "Ocorreu uma falha na resposta.");
+                restaurarInput();
+                return;
+            }
+
+            // Repassa o estado "finalizado" do Python para controlar a exibição da tabela
+            const estaFinalizado = dados.finalizado === true;
+            adicionarMensagemBot(dados.resposta_bot, dados.dossie_parcial, estaFinalizado);
+
+            // Atualiza de forma transparente as linhas pontilhadas do Dossiê Físico (Capa/Pasta)
+            if (dados.dossie_parcial) {
+                const d = dados.dossie_parcial;
+                const mapaFicha = {
+                    'txtContexto': d.Contexto,
+                    'txtAtores': d.Atores,
+                    'txtImpacto': d.Impacto,
+                    'txtContornos': d.Contornos || d["Contornos do Problema"],
+                    'txtMetrica': d["Métricas de Sucesso"] || d.Metricas || d.Metrica,
+                    'txtRestricoes': d.Restrições || d.Restricoes || d["Restrições / Riscos"],
+                    'txtAutor': d.Autor,
+                    'txtContato': d.Contato,
+                    'txtAreas': d.Áreas || d.Areas || d["Áreas Afetadas"]
+                };
+
+                for (let id in mapaFicha) {
+                    const el = document.getElementById(id);
+                    const val = mapaFicha[id];
+                    if (el && val && val !== "" && !val.includes("Aguardando")) {
+                        el.innerHTML = `<span style="color: #2b4c1f; font-weight: bold;">✔️ ${val}</span>`;
+                    }
+                }
+            }
+
+            // SE FINALIZADO: Abre a pasta física e libera o anexo
+            if (estaFinalizado) {
+                usuarioInput.placeholder = "Processo concluído. Veja os detalhes na pasta abaixo.";
+                
+                const pasta = document.getElementById('fichaPainel');
+                pasta.style.display = 'block';
+                
+                setTimeout(() => {
+                    pasta.classList.add('aberta');
+                    document.getElementById('blocoUploadFinal').style.display = 'block';
+                    configurarFluxoMidiaFinal();
+                    
+                    // Rolagem automática até a seção da pasta
+                    pasta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            } else {
+                restaurarInput();
+            }
+
+        } catch (err) {
+            typingIndicator.style.display = 'none';
+            adicionarMensagemErro("Sem resposta do servidor SIRP. Verifique o terminal do Python.");
+            restaurarInput();
+        }
+    }
+
+    function restaurarInput() {
+        usuarioInput.disabled = false;
+        btnEnviar.disabled = false;
+        usuarioInput.focus();
+    }
+
+    usuarioInput.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            enviarMensagem();
+        }
+    });
+
+    // 4. LOGICA DO ANEXO COMPROBATORIO EXCLUSIVO DO FIM
+    function configurarFluxoMidiaFinal() {
+        const fileInput = document.getElementById('inputArquivoVisual');
+        const barraContainer = document.getElementById('barraConversaoContainer');
+        const previewBox = document.getElementById('previewConvertidoBox');
+        const btnPublicar = document.getElementById('btnSalvarBanco');
+        const imgPolaroid = document.getElementById('dossieImagem');
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const arquivo = this.files[0];
+                const urlLocal = URL.createObjectURL(arquivo);
+
+                barraContainer.style.display = 'block';
+                btnPublicar.disabled = true;
+
+                // Simulação visual de compressão/upload do SIRP
+                setTimeout(() => {
+                    barraContainer.style.display = 'none';
+                    previewBox.style.display = 'block';
+
+                    if (arquivo.type.startsWith('video/')) {
+                        previewBox.innerHTML = `<video src="${urlLocal}" controls style="max-width: 100%; border-radius: 8px;"></video>`;
+                        imgPolaroid.src = "https://via.placeholder.com/200x150/353a24/f5e5bd?text=Video+Anexado";
+                    } else {
+                        previewBox.innerHTML = `<img src="${urlLocal}" alt="Preview" style="max-width: 100%; border-radius: 8px;">`;
+                        imgPolaroid.src = urlLocal;
+                    }
+
+                    btnPublicar.disabled = false;
+                }, 2000);
+            }
+        });
+
+        // Encerramento final: transição suave de fade-out e redirecionamento
+        btnPublicar.onclick = function() {
+            document.getElementById('carimboCaso').style.display = 'block';
+            
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.8s ease';
+                document.body.style.opacity = '0';
+
+                setTimeout(() => {
+                    window.location.href = "index.html"; 
+                }, 800);
+            }, 1000);
+        };
+    }
+</script>
 </body>
-</html>
+</html
