@@ -199,16 +199,17 @@ class EstadoConfirmacao(EstadoBot):
                     
                     REGRAS CRÍTICAS DE VALIDAÇÃO:
                     1. ÁREAS PERMITIDAS EXCLUSIVAMENTE: {AREAS_PERMITIDAS}. NENHUMA outra é aceita.
-                    2. COERÊNCIA: Mudanças que distorcem o problema original DEVEM ser barradas e confrontadas.
-                    3. GÍRIAS E CONTEXTO: Se você perguntou "Algo mais?" e o usuário responder "não", "nada", "tá bom", "pode ser", "manda bala", "fechou", "beleza", "tá mec", isso significa que ele APROVOU o rascunho e NÃO quer mais edições!
+                    2. INTEGRIDADE DOS CAMPOS: O 'Título' DEVE ser estritamente uma manchete descritiva do problema. Se o usuário tentar alterar o título para nomes de pessoas, apelidos, mensagens vagas ou brincadeiras, você DEVE barrar.
+                    3. COERÊNCIA: Mudanças que distorcem o problema original, trocam completamente o escopo ou vandalizam os campos DEVEM ser barradas e confrontadas.
+                    4. GÍRIAS E CONTEXTO: Se você perguntou "Algo mais?" e o usuário responder "não", "nada", "tá bom", "pode ser", "manda bala", "fechou", "beleza", "tá mec", isso significa que ele APROVOU o rascunho e NÃO quer mais edições!
 
                     Categorize a intenção do usuário RIGOROSAMENTE em uma destas opções:
                     - "intencao": 
-                        * "APROVADO": Se o usuário validar o rascunho (ex: 'ok', 'perfeito', 'fechou', 'manda bala') OU responder negativamente à pergunta 'Algo mais?' (ex: 'não', 'nada').
-                        * "DISCUSSAO_OU_CONFRONTO": Se pedir áreas fora da lista ou alterações absurdas.
-                        * "CORRECAO_VALIDA": Apenas para ajustes reais, coerentes e nas áreas válidas.
-                    - "resposta_chat": Sua fala. Se APROVADO, deixe vazio. Se CONFRONTO, seja direto sobre o porquê não pode acatar. Se CORRECAO_VALIDA, confirme a mudança brevemente.
-                    - "dicionario_updated": Se "CORRECAO_VALIDA", retorne as chaves atualizadas com as novas strings.
+                        * "APROVADO": Se o usuário validar o rascunho.
+                        * "DISCUSSAO_OU_CONFRONTO": Se pedir áreas fora da lista, alterar o título para nomes próprios, ou fizer alterações absurdas.
+                        * "CORRECAO_VALIDA": Apenas para ajustes reais, descritivos e coerentes.
+                    - "resposta_chat": Sua fala. Se APROVADO, deixe vazio. Se CONFRONTO, seja direto sobre o porquê a mudança é inválida para o SIRP. Se CORRECAO_VALIDA, confirme a mudança brevemente.
+                    - "dicionario_updated": Se "CORRECAO_VALIDA", retorne as chaves atualizadas com as novas strings. Use estritamente as chaves existentes.
                     """,
                     "response_mime_type": "application/json"
                 }
@@ -221,11 +222,15 @@ class EstadoConfirmacao(EstadoBot):
                 chatbot.finalizado = True
                 
             elif dados_ia.get("intencao") == "DISCUSSAO_OU_CONFRONTO":
-                chatbot.retornar_resposta_sistema(dados_ia['resposta_chat'])
-                chatbot.historico.append(f"Bot: {dados_ia['resposta_chat']}")
+                chatbot.retornar_resposta_sistema(dados_ia.get('resposta_chat', 'Não posso aplicar essa alteração pois foge das diretrizes do SIRP.'))
+                chatbot.historico.append(f"Bot: {dados_ia.get('resposta_chat')}")
                 
             else:
-                chatbot.detalhamento_problema.update(dados_ia.get("dicionario_updated", {}))
+                # TRAVA DE SEGURANÇA: Só atualiza chaves que de fato existem no dicionário base
+                novos_dados = dados_ia.get("dicionario_updated", {})
+                for k, v in novos_dados.items():
+                    if k in chatbot.detalhamento_problema:
+                        chatbot.detalhamento_problema[k] = v
                 
                 print("\n" + "="*55)
                 print("🔄 RASCUNHO ATUALIZADO:")
@@ -235,15 +240,16 @@ class EstadoConfirmacao(EstadoBot):
                         print(f"[{chave.upper()}]: {valor}\n")
                 print("="*55)
                 
-                chatbot.retornar_resposta_sistema("Ajuste feito com base nas diretrizes! Ficou conforme o esperado ou deseja alterar algo mais?")
+                chatbot.retornar_resposta_sistema(dados_ia.get('resposta_chat', "Ajuste feito com base nas diretrizes! Ficou conforme o esperado ou deseja alterar algo mais?"))
                 
         except Exception as e:
-             if "429" in str(e):
+             if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
                  chatbot.rotacionar_chave() 
                  chatbot.retornar_resposta_sistema("Estávamos sem limite. Tente pedir a alteração de novo, por favor.")
              else:
-                 chatbot.retornar_resposta_sistema("Não consegui processar a alteração. Pode reformular?")
-
+                 chatbot.retornar_resposta_sistema(f"Não consegui processar a alteração. Pode reformular?")
+                 print(f"[Erro Interno API]: {e}")
+                 
 class ChatbotSIRP:
     def __init__(self):
         self.estado_atual = EstadoColetaInicial()
@@ -276,6 +282,9 @@ class ChatbotSIRP:
         
         if self.api_keys:
             self.client = genai.Client(api_key=self.api_keys[self.indice_chave_atual])
+            
+        # --- ATRIBUTO NOVO: Guarda o caminho do anexo final enviado pelo modal ---
+        self.caminho_midia_anexada = None
 
     def rotacionar_chave(self):
         if len(self.api_keys) <= 1:
@@ -308,17 +317,50 @@ class ChatbotSIRP:
                 self.retornar_resposta_sistema("Olá! Por favor, descreva o gargalo prático que você encontrou na instituição ou uma ideia de projeto.")
                 return
 
-        
         if isinstance(self.estado_atual, EstadoColetaInicial) and len(mensagem_limpa) < 15:
             self.retornar_resposta_sistema("Seu relato está muito curto. Poderia expandir a ideia com pelo menos uma frase completa para eu entender o contexto?")
             return
             
         self.estado_atual.processar_mensagem(mensagem_limpa, self)
 
+
+    # =========================================================================
+    # NOVOS MÉTODOS INTEGRADORES (Adicionados ao final sem mexer no core)
+    # =========================================================================
+
+    def obter_rascunho_abstracao(self):
+        """Retorna o dicionário real de detalhamento preenchido pela IA para o front"""
+        return self.detalhamento_problema
+
+    def verificar_conclusao(self):
+        """Mapeia se o fluxo foi definido como finalizado pela máquina de estados"""
+        return self.finalizado
+
+    def vincular_midia_final(self, caminho_arquivo):
+        """Salva a referência do caminho do arquivo complementar enviado"""
+        self.caminho_midia_anexada = caminho_arquivo
+
+    def exportar_pacote_para_sqlite(self):
+        """
+        Consolida a abstração completa do dicionário original em JSON
+        e converte o arquivo complementar em BLOB binário pronto para o Daniel salvar.
+        """
+        # 1. Transforma o dicionário completo em String JSON pura
+        texto_json = json.dumps(self.detalhamento_problema, ensure_ascii=False)
+        
+        # 2. Faz a leitura física do arquivo e converte para binário (BLOB)
+        blob_midia = None
+        if self.caminho_midia_anexada and os.path.exists(self.caminho_midia_anexada):
+            with open(self.caminho_midia_anexada, 'rb') as arquivo_binario:
+                blob_midia = arquivo_binario.read()
+                
+        return {
+            "json_texto": texto_json,
+            "blob_arquivo": blob_midia
+        }
 if __name__ == "__main__":
     bot = ChatbotSIRP()
     print(f"\n[Bot]: {bot.ultima_resposta_bot}")
-    # O AVISO DA TI VOLTOU AQUI:
     print("(Aviso: Problemas de manutenção física devem ser abertos diretamente com a TI da instituição).")
     
     while not bot.finalizado: 

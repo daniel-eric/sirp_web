@@ -26,7 +26,9 @@ body {
     padding-top: 15vh;
 }
 
-/* --- HEADER E MENU EXTENSÍVEL --- */
+/* ==================================================
+   HEADER E MENU EXTENSÍVEL
+================================================== */
 header {
     background: linear-gradient(var(--gradiente-verde));
     box-shadow: 4px 4px 4px var(--sombra-suave);
@@ -56,7 +58,6 @@ header {
     display: flex;
     gap: 20px;
     max-width: 0;
-    /* Escondido por padrão */
     opacity: 0;
     overflow: hidden;
     white-space: nowrap;
@@ -65,7 +66,6 @@ header {
 
 #menu-extensivel.aberto {
     max-width: 400px;
-    /* Expande para a esquerda */
     opacity: 1;
 }
 
@@ -88,6 +88,7 @@ header {
     color: var(--laranja);
     padding: 0;
     box-shadow: none;
+    cursor: pointer;
 }
 
 #menu:hover {
@@ -95,7 +96,9 @@ header {
     color: var(--bege);
 }
 
-/* --- MAIN E LOGIN CARD --- */
+/* ==================================================
+   PÁGINAS GERAIS E FORMULÁRIOS (LOGIN/CADASTRO)
+================================================== */
 main {
     flex-grow: 1;
     display: flex;
@@ -121,35 +124,17 @@ form {
 }
 
 @keyframes popupEntrada {
-    from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.92);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(40px) scale(0.92); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: "Press Start 2P", monospace;
     text-transform: uppercase;
 }
 
-h1 {
-    font-size: clamp(2rem, 4vw, 3rem);
-    letter-spacing: 2vw;
-}
-
-h3 {
-    font-size: clamp(1.3rem, 4vw, 2rem);
-}
+h1 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: 2vw; }
+h3 { font-size: clamp(1.3rem, 4vw, 2rem); }
 
 form h2 {
     text-align: center;
@@ -159,8 +144,7 @@ form h2 {
     margin-bottom: 10px;
 }
 
-p,
-label {
+p, label {
     font-family: 'Space Mono', 'Consolas', monospace;
     font-size: 1rem;
     line-height: 1.5;
@@ -212,10 +196,10 @@ label {
     box-shadow: none;
     padding: 0;
     transition: color 0.3s ease, transform 0.3s;
+    cursor: pointer;
 }
 
 #btn-olho:hover {
-    background: transparent;
     color: var(--laranja);
     transform: scale(1.1);
 }
@@ -238,12 +222,11 @@ label {
 
 .cta:hover:not(:disabled) {
     background: linear-gradient(to bottom right, var(--gradiente-verde));
-    border: transparent;
+    border-color: transparent;
     color: var(--bege);
 }
 
-.cta:disabled,
-#menu:disabled {
+.cta:disabled, #menu:disabled {
     border-color: #555555 !important;
     color: #555555 !important;
     cursor: not-allowed;
@@ -262,9 +245,7 @@ label {
     transition: color 0.3s;
 }
 
-.link:hover {
-    color: var(--laranja);
-}
+.link:hover { color: var(--laranja); }
 
 #mensagem-erro {
     background-color: #ff4c4c;
@@ -283,61 +264,13 @@ label {
 }
 
 @keyframes tremer {
-
-    0%,
-    100% {
-        transform: translateX(0);
-    }
-
-    25%,
-    75% {
-        transform: translateX(-5px);
-    }
-
-    50% {
-        transform: translateX(5px);
-    }
-}
-
-
-footer {
-    background: linear-gradient(var(--gradiente-verde));
-    color: var(--bege);
-    padding: 3vh 2vh;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-#footer-contact {
-    width: 30vw;
-    min-width: 250px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-footer a svg {
-    stroke: var(--bege);
-    transition: stroke 0.3s ease;
-}
-
-footer a svg:hover {
-    stroke: var(--laranja);
-}
-
-#copy {
-    font-size: 0.7rem;
-    width: 100%;
-    text-align: center;
-    display: block;
+    0%, 100% { transform: translateX(0); }
+    25%, 75% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
 }
 
 #mensagem-sms {
     background-color: #25d366;
-    /* Verde estilo WhatsApp/SMS */
     color: var(--branco);
     padding: 10px;
     border-radius: 5px;
@@ -345,7 +278,6 @@ footer a svg:hover {
     font-size: 0.85rem;
     font-family: 'Space Mono', monospace;
     display: none;
-    /* Escondido por padrão */
     margin-top: 15px;
 }
 
@@ -354,22 +286,9 @@ footer a svg:hover {
     animation: fadeIn 0.4s ease-in-out;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 /* ==================================================
-   FEED DE PROBLEMAS (NOVO CÓDIGO)
+   FEED DE PROBLEMAS E PASTAS INTERATIVAS (INDEX)
 ================================================== */
-
 .feed-section {
     width: 100%;
     max-width: 900px;
@@ -384,7 +303,6 @@ footer a svg:hover {
     color: var(--bege);
     font-family: 'Press Start 2P', monospace;
     font-size: clamp(1.8rem, 5vw, 2.8rem);
-    /* Sombra com tom marrom estilo pixel art */
     text-shadow: -2px -2px 0 #574426, 2px -2px 0 #574426, -2px 2px 0 #574426, 2px 2px 0 #574426, 6px 6px 0px rgba(0, 0, 0, 0.6);
     margin-bottom: 40px;
     text-align: center;
@@ -393,7 +311,6 @@ footer a svg:hover {
 
 .search-wrapper {
     background-color: #0d4a25;
-    /* Fundo verde escuro do search */
     border-radius: 40px;
     padding: 8px 15px 8px 25px;
     display: flex;
@@ -405,12 +322,7 @@ footer a svg:hover {
     margin-bottom: 70px;
 }
 
-.search-icon {
-    color: var(--branco);
-    width: 26px;
-    height: 26px;
-    flex-shrink: 0;
-}
+.search-icon { color: var(--branco); width: 26px; height: 26px; flex-shrink: 0; }
 
 .search-input-container {
     background-color: var(--branco);
@@ -440,11 +352,7 @@ footer a svg:hover {
     transition: transform 0.2s;
 }
 
-.filter-icon:hover {
-    transform: scale(1.1);
-}
-
-/* --- ANIMAÇÃO DA PASTA --- */
+.filter-icon:hover { transform: scale(1.1); }
 
 .folder {
     margin-top: 10px;
@@ -470,7 +378,6 @@ footer a svg:hover {
 
 .folder-back {
     background-color: #dcb87e;
-    /* Bege mais escuro por dentro */
     border-radius: 0 15px 15px 15px;
     height: 280px;
     width: 100%;
@@ -482,11 +389,7 @@ footer a svg:hover {
 .folder-paper {
     background-color: var(--branco);
     position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    /* Preenche a altura da pasta */
+    top: 20px; left: 20px; right: 20px; bottom: 20px;
     border-radius: 8px;
     box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.15);
     opacity: 0;
@@ -500,7 +403,6 @@ footer a svg:hover {
     font-family: 'Space Mono', monospace;
     color: var(--preto);
     pointer-events: none;
-    /* Inativo enquanto fechado */
 }
 
 .paper-field {
@@ -524,16 +426,12 @@ footer a svg:hover {
     background-color: var(--bege);
     border-radius: 0 15px 15px 15px;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     z-index: 3;
     padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* A mágica acontece no clip-path, cortando a frente da pasta na transição */
     transition: clip-path 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     box-shadow: inset 2px 2px 10px rgba(255, 255, 255, 0.5);
@@ -561,7 +459,6 @@ footer a svg:hover {
     font-weight: bold;
 }
 
-/* Foto Polaroid */
 .polaroid {
     position: absolute;
     background: var(--branco);
@@ -586,80 +483,188 @@ footer a svg:hover {
 
 .paperclip {
     position: absolute;
-    top: -20px;
-    right: 20px;
-    width: 35px;
-    height: 60px;
+    top: -20px; right: 20px;
+    width: 35px; height: 60px;
     color: var(--laranja);
 }
 
-/* ==================================================
-   ESTADO ABERTO DA PASTA
-================================================== */
-.folder.aberta .folder-back {
-    height: 500px;
-    /* Pasta cresce revelando a folha inteira */
-}
+.folder.aberta .folder-back { height: 500px; }
+.folder.aberta .folder-paper { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.folder.aberta .folder-front { clip-path: polygon(0 88%, 100% 88%, 100% 100%, 0 100%); }
+.folder.aberta .folder-front-content { opacity: 0; pointer-events: none; }
+.folder.aberta .polaroid { top: 100px; right: 20px; transform: rotate(4deg); width: 180px; box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2); }
 
-.folder.aberta .folder-paper {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-.folder.aberta .folder-front {
-    /* A frente "desce" virando apenas a aba inferior */
-    clip-path: polygon(0 88%, 100% 88%, 100% 100%, 0 100%);
-}
-
-.folder.aberta .folder-front-content {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.folder.aberta .polaroid {
-    /* Foto se move para colar na folha */
-    top: 100px;
-    right: 20px;
-    transform: rotate(4deg);
-    width: 180px;
-    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-
-/* --- BOTÃO FLUTUANTE (FAB) --- */
+/* BOTÃO FLUTUANTE (FAB) */
 .fab {
     position: fixed;
-    bottom: 40px;
-    right: 40px;
-    width: 70px;
-    height: 70px;
+    bottom: 40px; right: 40px;
+    width: 70px; height: 70px;
     background: linear-gradient(var(--gradiente-laranja));
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; justify-content: center; align-items: center;
     box-shadow: 0 5px 15px var(--sombra-profunda);
     cursor: pointer;
     z-index: 100;
     transition: transform 0.3s, box-shadow 0.3s;
     border: 3px solid #ffaa00;
 }
+.fab:hover { transform: scale(1.1); box-shadow: 0 8px 25px var(--sombra-profunda); }
+.fab svg { color: var(--verde-escuro); width: 35px; height: 35px; transform: rotate(-15deg); }
 
-.fab:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px var(--sombra-profunda);
-}
-
-.fab svg {
-    color: var(--verde-escuro);
-    width: 35px;
-    height: 35px;
-    transform: rotate(-15deg);
-}
 
 /* ==================================================
-   FOOTER (Mantido do original com ajustes leves)
+   NOVO CHAT DE REPORTAR (ISOLADO PARA NÃO QUEBRAR O RESTO)
+================================================== */
+
+.main-container {
+    /* Isola o flexbox apenas para a página do Chat */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    height: calc(100vh - 18vh); 
+    align-items: stretch;
+}
+
+.chat-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--cinza-profundo);
+    border: 1px solid var(--verde-escuro);
+    border-radius: 12px;
+    height: 100%; 
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px var(--sombra-profunda);
+}
+
+.chat-header {
+    background: linear-gradient(var(--gradiente-verde));
+    color: var(--bege);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--laranja);
+}
+
+.status-badge {
+    font-size: 0.8rem;
+    background: rgba(43, 76, 31, 0.5);
+    padding: 4px 8px;
+    border-radius: 12px;
+    border: 1px solid var(--bege);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    scroll-behavior: smooth;
+}
+
+.chat-messages::-webkit-scrollbar { width: 6px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--laranja); border-radius: 4px; }
+
+.mensagem { max-width: 85%; display: flex; flex-direction: column; animation: fadeIn 0.3s; }
+.mensagem.user { align-self: flex-end; }
+.mensagem.bot { align-self: flex-start; }
+
+.texto {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.mensagem.user .texto { background: linear-gradient(var(--gradiente-laranja)); color: var(--preto); border-bottom-right-radius: 2px; }
+.mensagem.bot .texto { background: var(--verde-escuro); color: var(--bege); border-bottom-left-radius: 2px; border: 1px solid rgba(245, 229, 189, 0.2); }
+
+.chat-input-container {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: #111;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 10;
+    pointer-events: auto !important;
+}
+
+.chat-input-container input {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--cinza-profundo);
+    border: 1px solid rgba(252, 184, 68, 0.3);
+    border-radius: 8px;
+    color: var(--branco);
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s;
+}
+
+.chat-input-container input:focus { border-color: var(--laranja); }
+.chat-input-container input:disabled { opacity: 0.5; }
+
+.chat-input-container button {
+    padding: 12px 20px;
+    background: var(--laranja);
+    border: none;
+    border-radius: 8px;
+    color: var(--preto);
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.chat-input-container button:hover:not(:disabled) { transform: scale(1.05); }
+.chat-input-container button:disabled { background: #555; color: #888; cursor: not-allowed; }
+
+.tabela-abstracao {
+    width: 100%; border-collapse: collapse; margin: 10px 0 15px 0;
+    background: rgba(53, 58, 36, 0.4); border: 1px solid var(--bege); border-radius: 8px; overflow: hidden;
+    color: var(--branco); font-family: sans-serif; box-shadow: 0 4px 15px var(--sombra-suave);
+}
+.tabela-abstracao th, .tabela-abstracao td { padding: 12px 15px; text-align: left; border-bottom: 1px solid rgba(245, 229, 189, 0.2); }
+.tabela-abstracao th { background-color: var(--verde-escuro); color: var(--laranja); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
+.tabela-abstracao tr:last-child td { border-bottom: none; }
+
+.modal-exportacao {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+    background: linear-gradient(var(--gradiente-cinza)); border: 2px solid var(--laranja); padding: 25px;
+    border-radius: 16px; z-index: 1000; box-shadow: 0 10px 30px var(--sombra-profunda);
+    text-align: center; width: 90%; max-width: 450px;
+    display: none; opacity: 0; transition: all 0.3s ease-in-out; pointer-events: none;
+}
+.modal-exportacao.ativo { display: block; opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+
+.modal-botoes { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+.btn-modal { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+.btn-modal.imagem { background: var(--laranja); color: var(--branco); }
+.btn-modal.video { background: var(--verde-escuro); color: var(--bege); border: 1px solid var(--bege); }
+.btn-modal.recusar { background: #666; color: var(--branco); }
+
+.typing-indicator { display: flex; gap: 6px; padding: 12px 18px; background: var(--verde-escuro); border-radius: 12px; width: fit-content; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.typing-indicator span { width: 8px; height: 8px; background: var(--bege); border-radius: 50%; animation: bounce 1.4s infinite; }
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ==================================================
+   FOOTER (RODAPÉ)
 ================================================== */
 footer {
     background: linear-gradient(var(--gradiente-verde));
@@ -681,392 +686,21 @@ footer {
     align-items: center;
 }
 
-footer a svg {
-    stroke: var(--bege);
-    transition: stroke 0.3s ease;
-}
-
-footer a svg:hover {
-    stroke: var(--laranja);
-}
-
-#copy {
-    font-size: 0.7rem;
-    width: 100%;
-    text-align: center;
-    display: block;
-}
+footer a { color: var(--bege); transition: color 0.3s ease; }
+footer a:hover { color: var(--laranja); }
+#copy { font-size: 0.7rem; width: 100%; text-align: center; display: block; }
 
 /* ==================================================
-   MEDIA QUERIES PARA RESPONSIVIDADE
+   MEDIA QUERIES (RESPONSIVIDADE GERAL)
 ================================================== */
 @media (max-width: 768px) {
-    .folder-front-content {
-        max-width: 100%;
-    }
-
-    .polaroid {
-        width: 120px;
-        right: 10px;
-        top: 30px;
-        padding: 5px 5px 20px 5px;
-    }
-
-    .polaroid img {
-        height: 90px;
-    }
-
-    .folder.aberta .polaroid {
-        width: 110px;
-        top: 60px;
-        right: 10px;
-    }
-
-    .paperclip {
-        width: 25px;
-        height: 40px;
-        top: -15px;
-        right: 10px;
-    }
-
-    .folder.aberta .folder-back {
-        height: 450px;
-    }
-
-    .fab {
-        bottom: 20px;
-        right: 20px;
-        width: 55px;
-        height: 55px;
-    }
-
-    .fab svg {
-        width: 25px;
-        height: 25px;
-    }
-}
-
-:root {
-    --verde-escuro: rgb(53, 58, 36);
-    --gradiente-verde: to bottom right, var(--verde-escuro), rgb(32, 41, 8);
-    --bege: rgb(245, 229, 189);
-    --laranja: rgb(218, 135, 1);
-    --gradiente-laranja: rgb(252, 184, 68), var(--laranja);
-    --branco: rgb(255, 255, 255);
-    --sombra-suave: rgba(0, 0, 0, 0.2);
-    --preto: rgb(0, 0, 0);
-    --sombra-profunda: rgba(0, 0, 0, 0.5);
-    --cinza-profundo: rgb(39, 37, 37);
-    --gradiente-cinza: to bottom left, rgb(20, 19, 19), var(--cinza-profundo);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: linear-gradient(var(--gradiente-cinza));
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding-top: 15vh;
-}
-
-/* =========================================
-   CHAT SIRP - ESTILOS DA INTERFACE
-   ========================================= */
-
-.chat-container {
-    background: var(--cinza-profundo);
-    border-radius: 12px;
-    border: 1px solid var(--verde-escuro);
-    display: flex;
-    flex-direction: column;
-    height: 550px;
-    max-width: 800px;
-    margin: 0 auto 30px auto;
-    box-shadow: 0 10px 30px var(--sombra-profunda);
-    overflow: hidden;
-}
-
-.chat-header {
-    background: linear-gradient(var(--gradiente-verde));
-    color: var(--bege);
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid var(--laranja);
-}
-
-.status-badge {
-    font-size: 0.8rem;
-    background: rgba(43, 76, 31, 0.5);
-    padding: 4px 8px;
-    border-radius: 12px;
-    border: 1px solid var(--bege);
-}
-
-.chat-box {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background: rgba(0, 0, 0, 0.2);
-}
-
-/* --- Bolhas de Mensagem --- */
-.mensagem {
-    max-width: 85%;
-    display: flex;
-    flex-direction: column;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.mensagem.user {
-    align-self: flex-end;
-}
-
-.mensagem.bot {
-    align-self: flex-start;
-}
-
-.mensagem .texto {
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    word-wrap: break-word;
-}
-
-/* Mensagem do Usuário (Laranja) */
-.mensagem.user .texto {
-    background: linear-gradient(var(--gradiente-laranja));
-    color: var(--preto);
-    border-bottom-right-radius: 2px;
-    box-shadow: 0 4px 10px rgba(218, 135, 1, 0.2);
-}
-
-/* Mensagem do Bot (Verde/Bege) */
-.mensagem.bot .texto {
-    background: var(--verde-escuro);
-    color: var(--bege);
-    border-bottom-left-radius: 2px;
-    border: 1px solid rgba(245, 229, 189, 0.2);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* --- Área de Input e Botões --- */
-.chat-input-area {
-    background: var(--cinza-profundo);
-    padding: 15px;
-    border-top: 1px solid var(--verde-escuro);
-}
-
-.input-wrapper {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-#usuarioInput {
-    flex: 1;
-    background: #111;
-    border: 1px solid var(--verde-escuro);
-    color: var(--branco);
-    padding: 12px 15px;
-    border-radius: 8px;
-    resize: none;
-    font-family: inherit;
-    font-size: 1rem;
-    min-height: 50px;
-    transition: 0.3s;
-}
-
-#usuarioInput:focus {
-    outline: none;
-    border-color: var(--laranja);
-    box-shadow: 0 0 8px rgba(218, 135, 1, 0.3);
-}
-
-#usuarioInput:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.chat-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.media-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.media-btn {
-    color: var(--bege);
-    cursor: pointer;
-    padding: 12px;
-    background: var(--verde-escuro);
-    border-radius: 8px;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.media-btn:hover {
-    background: var(--laranja);
-    color: var(--preto);
-}
-
-.btn-send {
-    background: var(--laranja);
-    color: var(--preto);
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-send:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(218, 135, 1, 0.4);
-}
-
-.btn-send:disabled {
-    background: #555;
-    color: #888;
-    cursor: not-allowed;
-}
-
-/* --- Preview de Mídia no Input --- */
-.media-preview-box {
-    display: flex; /* Oculto via JS quando vazio */
-    align-items: center;
-    gap: 15px;
-    background: #111;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border: 1px dashed var(--verde-escuro);
-}
-
-.media-preview-box img {
-    height: 40px;
-    width: 40px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.media-status-text {
-    color: var(--bege);
-    font-size: 0.9rem;
-    flex: 1;
-}
-
-.btn-remover {
-    background: none;
-    border: none;
-    color: #ff4d4d;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: 0.2s;
-}
-
-.btn-remover:hover {
-    color: #ff1a1a;
-    transform: scale(1.1);
-}
-
-/* Animação suave para as mensagens surgindo */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsividade Básica pro Chat */
-@media (max-width: 768px) {
-    .chat-container {
-        height: 70vh;
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
-    .chat-actions {
-        flex-direction: column;
-    }
-    .input-wrapper {
-        align-items: flex-end;
-    }
-}
-
-/* =========================================
-   ANIMAÇÃO DE LOADING E RESUMO NO CHAT
-   ========================================= */
-
-.typing-indicator {
-    display: none; /* Escondido por padrão */
-    align-items: center;
-    gap: 6px;
-    padding: 12px 18px;
-    background: var(--verde-escuro);
-    border-radius: 12px;
-    border-bottom-left-radius: 2px;
-    width: fit-content;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.typing-indicator span {
-    width: 8px;
-    height: 8px;
-    background-color: var(--bege);
-    border-radius: 50%;
-    animation: bounce 1.4s infinite ease-in-out both;
-}
-
-.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-
-@keyframes bounce {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1); }
-}
- 
-/* Mensagens de Erro/Aviso */
-.mensagem.erro .texto {
-    background: #3a1515;
-    color: #ffb3b3;
-    border-left: 4px solid #ff4d4d;
-    border-bottom-left-radius: 2px;
-}
-
-/* Tabela de Resumo gerada no Chat */
-.tabela-resumo-chat {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px dashed var(--laranja);
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-.tabela-resumo-chat strong {
-    color: var(--laranja);
-    display: inline-block;
-    width: 100%;
-    margin-top: 5px;
+    .folder-front-content { max-width: 100%; }
+    .polaroid { width: 120px; right: 10px; top: 30px; padding: 5px 5px 20px 5px; }
+    .polaroid img { height: 90px; }
+    .folder.aberta .polaroid { width: 110px; top: 60px; right: 10px; }
+    .paperclip { width: 25px; height: 40px; top: -15px; right: 10px; }
+    .folder.aberta .folder-back { height: 450px; }
+    .fab { bottom: 20px; right: 20px; width: 55px; height: 55px; }
+    .fab svg { width: 25px; height: 25px; }
+    .main-container { height: 75vh; }
 }

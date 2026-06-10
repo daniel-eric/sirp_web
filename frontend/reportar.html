@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Reportar</title>
+    <title>Reportar - SIRP</title>
     <link rel="icon" type="image/png" href="assets/sirp_logo_min.png">
 </head>
 <body>
@@ -13,377 +13,203 @@
         <a href="index.html">
             <img src="assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
         </a>
-        
         <div class="menu-wrapper">
             <nav id="menu-extensivel">
                 <a href="perfil.html">Perfil</a>
                 <a href="index.html">Problemas</a>
-                <a id="logout">Logout</a>
+                <a href="login.html">Logout</a>
             </nav>
-            
             <button id="menu" aria-label="Abrir menu" onclick="document.getElementById('menu-extensivel').classList.toggle('aberto')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
+                <i class="fa-solid fa-bars" style="font-size: 24px; color: var(--laranja);"></i>
             </button>
         </div>
     </header>
 
     <main class="main-container">
-        <div class="chat-container">
+        <div class="chat-wrapper">
             <div class="chat-header">
                 <h2><i class="fa-solid fa-robot"></i> Analista Técnico SIRP</h2>
                 <span class="status-badge">Conexão Segura</span>
             </div>
             
-            <div class="chat-box" id="chatBox">
+            <div class="chat-messages" id="chat-box">
+                <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                    <span></span><span></span><span></span>
                 </div>
+            </div>
 
-                <div id="typingIndicator" class="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-            <div class="chat-input-area">
-                <div id="mediaPreviewContainer" class="media-preview-box">
-                    <img id="imgThumbnail" src="" alt="Miniatura" style="display: none;">
-                    <i id="videoIcon" class="fa-solid fa-file-video" style="display: none;"></i>
-                    <div id="mediaUploadStatus" class="media-status-text">Processando...</div>
-                    <button type="button" id="btnRemoverMidia" class="btn-remover">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-
-                <div class="input-wrapper">
-                    <textarea id="usuarioInput" rows="1" placeholder="Digite seu relato aqui..." required></textarea>
-                    
-                    <div class="chat-actions">
-                        <div class="media-actions">
-                            <label class="media-btn" title="Anexar Imagem">
-                                <i class="fa-solid fa-camera"></i>
-                                <input type="file" id="imgUpload" accept="image/*" style="display: none;">
-                            </label>
-                            <label class="media-btn" title="Anexar Vídeo">
-                                <i class="fa-solid fa-video"></i>
-                                <input type="file" id="vidUpload" accept="video/*" style="display: none;">
-                            </label>
-                        </div>
-                        
-                        <button id="btnEnviar" class="btn-send" onclick="enviarMensagem()" title="Enviar Mensagem">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
+            <div class="chat-input-container">
+                <button id="btn-refresh" title="Reiniciar Conversa" aria-label="Reiniciar conversa">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+                <input type="text" id="input-mensagem" placeholder="Descreva o gargalo ou sua ideia...">
+                <button id="btn-enviar">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
             </div>
         </div>
 
-        <div id="fichaPainel" class="folder" style="display: none;">
-    <div class="folder-tab"></div>
-    <div class="folder-back"></div>
-    
-    <div class="folder-paper">
-        <div class="dossie-content">
-            <div class="dossie-row">
-                <span class="label">CONTEXTO DO DESAFIO:</span>
-                <span id="txtContexto" class="dotted-line">Aguardando dados...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">ATORES ENVOLVIDOS:</span>
-                <span id="txtAtores" class="dotted-line">Aguardando dados...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">IMPACTO OPERACIONAL:</span>
-                <span id="txtImpacto" class="dotted-line">Aguardando dados...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">CONTORNOS DO PROBLEMA:</span>
-                <span id="txtContornos" class="dotted-line">Aguardando dados...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">MÉTRICAS DE SUCESSO:</span>
-                <span id="txtMetrica" class="dotted-line">Aguardando dados...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">RESTRIÇÕES / RISCOS:</span>
-                <span id="txtRestricoes" class="dotted-line">Aguardando análise...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">AUTOR:</span>
-                <span id="txtAutor" class="dotted-line">Aguardando identificação...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">CONTATO:</span>
-                <span id="txtContato" class="dotted-line">Aguardando canal...</span>
-            </div>
-            <div class="dossie-row">
-                <span class="label">ÁREAS AFETADAS:</span>
-                <span id="txtAreas" class="dotted-line">Aguardando mapeamento...</span>
-            </div>
-
-            <div class="zona-upload-final" id="blocoUploadFinal" style="display: none; margin-top: 20px;">
-                <p><i class="fa-solid fa-paperclip"></i> Deseja anexar alguma imagem ou vídeo comprobatório?</p>
-                <input type="file" id="inputArquivoVisual" accept="image/*,video/*">
-                
-                <div class="barra-progresso-container" id="barraConversaoContainer" style="display: none; margin-top: 10px;">
-                    <div class="barra-progresso-fill" style="width: 100%; background: var(--laranja); height: 5px; animation: progress 2.5s ease;"></div>
-                </div>
-                
-                <div class="preview-resultado-box" id="previewConvertidoBox" style="display: none; margin-top: 10px;"></div>
-            </div>
-
-            <div class="carimbo-final-dinamico" id="carimboCaso" style="display: none; color: green; font-weight: bold; text-align: center; margin: 15px 0;">RESOLVIDO</div>
+        <div id="modal-final-sirp" class="modal-exportacao">
+            <h3 style="color: var(--bege); margin-bottom: 10px;">Processo Concluído!</h3>
+            <p style="color: var(--branco); font-size: 0.95rem;">Deseja exportar uma imagem ou vídeo de complemento? (Apenas 1 arquivo)</p>
             
-            <button class="cta" id="btnSalvarBanco" style="width: 100%; margin-top: 20px;">✓ Publicar Rascunho no Feed</button>
+            <div class="modal-botoes">
+                <button class="btn-modal imagem" onclick="ativarSeletorMidia('image/*')"><i class="fa-solid fa-image"></i> Imagem</button>
+                <button class="btn-modal video" onclick="ativarSeletorMidia('video/*')"><i class="fa-solid fa-video"></i> Vídeo</button>
+                <button class="btn-modal recusar" onclick="encerrarEIrParaPerfil()"><i class="fa-solid fa-xmark"></i> Não</button>
+            </div>
+            
+            <input type="file" id="input-midia-final" style="display: none;" onchange="processarMidiaFinal(this)">
+            <div id="preview-modal-box" style="margin-top: 15px; display: none;"></div>
         </div>
-        <div class="paper-footer">DOCUMENTO GERADO PELO SISTEMA SIRP</div>
-    </div>
-
-    <div class="folder-front">
-        <div class="folder-front-content">
-            <div class="folder-title">DOSSIÊ<br>TÉCNICO</div>
-            <div class="folder-tags">#SIRP #ANÁLISE</div>
-        </div>
-    </div>
-
-    <div class="polaroid">
-        <i class="fa-solid fa-paperclip paperclip"></i>
-        <img id="dossieImagem" src="https://via.placeholder.com/200x150/353a24/f5e5bd?text=Sem+Imagem" alt="Evidência do Caso">
-    </div>
-</div>
-    
     </main>
 
     <footer>
-        <p id="copy">&COPY; 2026 System Integration Ruralinda Problems. Todos os direitos reservados.</p>
+        <p id="copy">&copy; 2026 System Integration Ruralinda Problems. Todos os direitos reservados.</p>
         <div id="footer-contact">
             <h3>Entre em Contato</h3>
-            <a href="mailto:jezreel.david@ufrpe.br">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            </a>
-            <a href="tel:+5581983606736">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-            </a>
+            <a href="mailto:jezreel.david@ufrpe.br"><i class="fa-solid fa-envelope" style="font-size: 20px;"></i></a>
+            <a href="tel:+5581983606736"><i class="fa-solid fa-phone" style="font-size: 20px;"></i></a>
         </div>
     </footer>
 
     <script>
-    const chatBox = document.getElementById('chatBox');
-    const usuarioInput = document.getElementById('usuarioInput');
-    const btnEnviar = document.getElementById('btnEnviar');
-    const typingIndicator = document.getElementById('typingIndicator');
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById('input-mensagem');
+            const btnEnviar = document.getElementById('btn-enviar');
+            const btnRefresh = document.getElementById('btn-refresh');
+            const chatBox = document.getElementById('chat-box');
+            const typingIndicator = document.getElementById('typingIndicator');
 
-    // Garante que o indicador inicie totalmente oculto
-    if (typingIndicator) typingIndicator.style.display = 'none';
+            // Inicia zerando o bot
+            fetch('/api/reset', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => renderizarBot(data.mensagem_inicial || data.message));
 
-    // 1. INICIALIZAÇÃO: Reseta a memória da IA ao carregar a página
-    window.addEventListener('DOMContentLoaded', async () => {
-        try {
-            const response = await fetch('/api/reset', { method: 'POST' });
-            const data = await response.json();
-            adicionarMensagemBot(data.mensagem_inicial);
-        } catch (error) {
-            adicionarMensagemErro("❌ Falha ao conectar com os servidores do SIRP. Verifique sua conexão.");
-        }
-    });
+            function rolarFinal() { chatBox.scrollTop = chatBox.scrollHeight; }
 
-    function rolarParaFinal() {
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    // 2. FUNÇÕES DE RENDERIZAÇÃO DAS BOLHAS
-    function adicionarMensagemUsuario(texto) {
-        const html = `
-            <div class="mensagem user" style="text-align: right; margin-bottom: 10px; color: var(--laranja);">
-                <div class="texto"><strong>Você:</strong> ${texto}</div>
-            </div>`;
-        typingIndicator.insertAdjacentHTML('beforebegin', html);
-        rolarParaFinal();
-    }
-
-    function adicionarMensagemBot(texto, dossieInfo = null, finalizado = false) {
-        let tabelaHtml = "";
-        
-        // SÓ MOSTRA A TABELA NO CHAT SE O FLUXO EM PYTHON RETORNAR FINALIZADO
-        if (finalizado && dossieInfo) {
-            tabelaHtml = `
-            <div class="tabela-resumo-chat" style="margin-top: 12px;">
-                <strong>Contexto:</strong> ${dossieInfo.Contexto || '-'} <br>
-                <strong>Atores:</strong> ${dossieInfo.Atores || '-'} <br>
-                <strong>Impacto:</strong> ${dossieInfo.Impacto || '-'} <br>
-                <strong>Contornos:</strong> ${dossieInfo.Contornos || dossieInfo["Contornos do Problema"] || '-'} <br>
-                <strong>Métricas:</strong> ${dossieInfo["Métricas de Sucesso"] || dossieInfo.Metricas || dossieInfo.Metrica || '-'} <br>
-                <strong>Restrições:</strong> ${dossieInfo.Restrições || dossieInfo.Restricoes || '-'} <br>
-                <strong>Autor:</strong> ${dossieInfo.Autor || '-'} <br>
-                <strong>Contato:</strong> ${dossieInfo.Contato || '-'} <br>
-                <strong>Áreas:</strong> ${dossieInfo.Áreas || dossieInfo.Areas || dossieInfo["Áreas Afetadas"] || '-'}
-            </div>`;
-        }
-
-        const html = `
-            <div class="mensagem bot" style="text-align: left; margin-bottom: 10px; color: var(--bege);">
-                <div class="texto"><strong>Analista SIRP:</strong> ${texto} ${tabelaHtml}</div>
-            </div>`;
-        typingIndicator.insertAdjacentHTML('beforebegin', html);
-        rolarParaFinal();
-    }
-
-    function adicionarMensagemErro(texto) {
-        const html = `
-            <div class="mensagem erro" style="text-align: left; margin-bottom: 10px;">
-                <div class="texto"><i class="fa-solid fa-triangle-exclamation"></i> ${texto}</div>
-            </div>`;
-        typingIndicator.insertAdjacentHTML('beforebegin', html);
-        rolarParaFinal();
-    }
-
-    // 3. ENVIO DE MENSAGENS E INTEGRAÇÃO COM BACKEND
-    async function enviarMensagem() {
-        const texto = usuarioInput.value.trim();
-        if (!texto) return;
-
-        adicionarMensagemUsuario(texto);
-
-        // Ativa estados de processamento (Bolinhas pulando)
-        usuarioInput.value = "";
-        usuarioInput.disabled = true;
-        btnEnviar.disabled = true;
-        typingIndicator.style.display = 'flex';
-        rolarParaFinal();
-
-        try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mensagem: texto })
-            });
-
-            const dados = await response.json();
-            typingIndicator.style.display = 'none';
-
-            if (response.status !== 200 || dados.erro) {
-                adicionarMensagemErro(dados.erro || "Ocorreu uma falha na resposta.");
-                restaurarInput();
-                return;
+            function renderizarUser(msg) {
+                const div = document.createElement('div');
+                div.className = 'mensagem user';
+                div.innerHTML = `<div class="texto"><strong>Você:</strong> ${msg}</div>`;
+                chatBox.insertBefore(div, typingIndicator);
+                rolarFinal();
             }
 
-            // Repassa o estado "finalizado" do Python para controlar a exibição da tabela
-            const estaFinalizado = dados.finalizado === true;
-            adicionarMensagemBot(dados.resposta_bot, dados.dossie_parcial, estaFinalizado);
-
-            // Atualiza de forma transparente as linhas pontilhadas do Dossiê Físico (Capa/Pasta)
-            if (dados.dossie_parcial) {
-                const d = dados.dossie_parcial;
-                const mapaFicha = {
-                    'txtContexto': d.Contexto,
-                    'txtAtores': d.Atores,
-                    'txtImpacto': d.Impacto,
-                    'txtContornos': d.Contornos || d["Contornos do Problema"],
-                    'txtMetrica': d["Métricas de Sucesso"] || d.Metricas || d.Metrica,
-                    'txtRestricoes': d.Restrições || d.Restricoes || d["Restrições / Riscos"],
-                    'txtAutor': d.Autor,
-                    'txtContato': d.Contato,
-                    'txtAreas': d.Áreas || d.Areas || d["Áreas Afetadas"]
-                };
-
-                for (let id in mapaFicha) {
-                    const el = document.getElementById(id);
-                    const val = mapaFicha[id];
-                    if (el && val && val !== "" && !val.includes("Aguardando")) {
-                        el.innerHTML = `<span style="color: #2b4c1f; font-weight: bold;">✔️ ${val}</span>`;
+            function renderizarBot(msg, abstracao = null, concluido = false) {
+                let tabelaHtml = '';
+                // Renderiza a tabela limpa sempre que houver dados estruturados
+                if (abstracao && typeof abstracao === 'object' && Object.keys(abstracao).length > 0 && abstracao["Contexto"] !== "") {
+                    tabelaHtml = `<table class="tabela-abstracao"><tbody>`;
+                    for (const [chave, valor] of Object.entries(abstracao)) {
+                        if (valor && valor.trim() !== "") {
+                            tabelaHtml += `<tr><td><strong>${chave}</strong></td><td>${valor}</td></tr>`;
+                        }
                     }
+                    tabelaHtml += `</tbody></table>`;
+                }
+
+                const div = document.createElement('div');
+                div.className = 'mensagem bot';
+                div.innerHTML = `<div class="texto"><strong>Analista SIRP:</strong><br>${tabelaHtml}${msg}</div>`;
+                chatBox.insertBefore(div, typingIndicator);
+                rolarFinal();
+
+                // Se terminou, trava o input e abre o Modal
+                if (concluido) {
+                    input.disabled = true;
+                    btnEnviar.disabled = true;
+                    input.placeholder = "Relato concluído e em processamento...";
+                    document.getElementById('modal-final-sirp').classList.add('ativo');
                 }
             }
 
-            // SE FINALIZADO: Abre a pasta física e libera o anexo
-            if (estaFinalizado) {
-                usuarioInput.placeholder = "Processo concluído. Veja os detalhes na pasta abaixo.";
-                
-                const pasta = document.getElementById('fichaPainel');
-                pasta.style.display = 'block';
-                
-                setTimeout(() => {
-                    pasta.classList.add('aberta');
-                    document.getElementById('blocoUploadFinal').style.display = 'block';
-                    configurarFluxoMidiaFinal();
-                    
-                    // Rolagem automática até a seção da pasta
-                    pasta.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-            } else {
-                restaurarInput();
+            async function enviar() {
+                const txt = input.value.trim();
+                if (!txt) return;
+
+                renderizarUser(txt);
+                input.value = '';
+                input.disabled = true;
+                btnEnviar.disabled = true;
+                typingIndicator.style.display = 'flex';
+                rolarFinal();
+
+                try {
+                    const res = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mensagem: txt })
+                    });
+                    const data = await res.json();
+                    typingIndicator.style.display = 'none';
+                    input.disabled = false;
+                    btnEnviar.disabled = false;
+                    input.focus();
+
+                    renderizarBot(data.mensagem || data.resposta_bot, data.abstracao || data.dossie_parcial, data.concluido || data.finalizado);
+                } catch (e) {
+                    typingIndicator.style.display = 'none';
+                    renderizarBot("⚠️ Houve um erro ao processar. Tente novamente.");
+                    input.disabled = false;
+                    btnEnviar.disabled = false;
+                }
             }
 
-        } catch (err) {
-            typingIndicator.style.display = 'none';
-            adicionarMensagemErro("Sem resposta do servidor SIRP. Verifique o terminal do Python.");
-            restaurarInput();
-        }
-    }
+            btnEnviar.onclick = enviar;
+            input.onkeydown = (e) => { if (e.key === 'Enter') enviar(); };
 
-    function restaurarInput() {
-        usuarioInput.disabled = false;
-        btnEnviar.disabled = false;
-        usuarioInput.focus();
-    }
-
-    usuarioInput.addEventListener('keydown', (e) => {
-        if(e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            enviarMensagem();
-        }
-    });
-
-    // 4. LOGICA DO ANEXO COMPROBATORIO EXCLUSIVO DO FIM
-    function configurarFluxoMidiaFinal() {
-        const fileInput = document.getElementById('inputArquivoVisual');
-        const barraContainer = document.getElementById('barraConversaoContainer');
-        const previewBox = document.getElementById('previewConvertidoBox');
-        const btnPublicar = document.getElementById('btnSalvarBanco');
-        const imgPolaroid = document.getElementById('dossieImagem');
-
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const arquivo = this.files[0];
-                const urlLocal = URL.createObjectURL(arquivo);
-
-                barraContainer.style.display = 'block';
-                btnPublicar.disabled = true;
-
-                // Simulação visual de compressão/upload do SIRP
-                setTimeout(() => {
-                    barraContainer.style.display = 'none';
-                    previewBox.style.display = 'block';
-
-                    if (arquivo.type.startsWith('video/')) {
-                        previewBox.innerHTML = `<video src="${urlLocal}" controls style="max-width: 100%; border-radius: 8px;"></video>`;
-                        imgPolaroid.src = "https://via.placeholder.com/200x150/353a24/f5e5bd?text=Video+Anexado";
-                    } else {
-                        previewBox.innerHTML = `<img src="${urlLocal}" alt="Preview" style="max-width: 100%; border-radius: 8px;">`;
-                        imgPolaroid.src = urlLocal;
-                    }
-
-                    btnPublicar.disabled = false;
-                }, 2000);
-            }
+            btnRefresh.onclick = () => {
+                if (confirm("Deseja realmente limpar o histórico e reiniciar o relato?")) {
+                    fetch('/api/reset', { method: 'POST' })
+                        .then(res => res.json())
+                        .then(data => {
+                            document.querySelectorAll('.mensagem').forEach(el => el.remove());
+                            renderizarBot(data.mensagem_inicial || data.message);
+                            input.disabled = false;
+                            btnEnviar.disabled = false;
+                            input.placeholder = "Descreva o gargalo ou sua ideia...";
+                        });
+                }
+            };
         });
 
-        // Encerramento final: transição suave de fade-out e redirecionamento
-        btnPublicar.onclick = function() {
-            document.getElementById('carimboCaso').style.display = 'block';
-            
-            setTimeout(() => {
-                document.body.style.transition = 'opacity 0.8s ease';
-                document.body.style.opacity = '0';
+        // FUNÇÕES DO MODAL FINAL
+        function ativarSeletorMidia(tipo) {
+            const input = document.getElementById('input-midia-final');
+            input.accept = tipo;
+            input.click();
+        }
 
-                setTimeout(() => {
-                    window.location.href = "index.html"; 
-                }, 800);
-            }, 1000);
-        };
-    }
-</script>
+        function processarMidiaFinal(input) {
+            const arquivo = input.files[0];
+            if (!arquivo) return;
+
+            const formData = new FormData();
+            formData.append('arquivo', arquivo);
+
+            const preview = document.getElementById('preview-modal-box');
+            preview.style.display = 'block';
+            preview.innerHTML = `<p style="color: var(--laranja);">Processando mídia no servidor...</p>`;
+
+            fetch('/api/upload_final', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(dados => {
+                    if (dados.success) {
+                        preview.innerHTML = `<p style="color: #4cd137;">Anexo salvo! Redirecionando...</p>`;
+                        setTimeout(encerrarEIrParaPerfil, 1500);
+                    } else {
+                        preview.innerHTML = `<p style="color: #e84118;">Erro ao anexar arquivo.</p>`;
+                    }
+                });
+        }
+
+        function encerrarEIrParaPerfil() {
+            document.getElementById('modal-final-sirp').classList.remove('ativo');
+            document.body.style.transition = 'opacity 0.8s ease';
+            document.body.style.opacity = '0';
+            setTimeout(() => { window.location.href = "perfil.html"; }, 800);
+        }
+    </script>
 </body>
-</html
+</html>
