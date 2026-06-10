@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/index.css">
     <title>SIRP</title>
     <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
@@ -20,7 +21,7 @@
                 <a href="/" id="logout">Logout</a>
             </nav>
 
-            <button id="menu" aria-label="Abrir menu" onclick="document.getElementById('menu-extensivel').classList.toggle('aberto')">
+            <button id="menu" aria-label="Abrir menu">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -57,20 +58,20 @@
                 </div>
             </form>
 
-            <div class="advanced-filters" id="advanced-filters" style="display: none; width: 100%; max-width: 800px; margin: -40px auto 30px;">
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <input type="text" name="areas" form="filter-form" placeholder="Áreas" value="{{ areas_filter }}" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.25); border: 2px solid var(--bege); border-radius: 6px; color: #fff; font-family: 'Space Mono', monospace;">
-                    <input type="text" name="author" form="filter-form" placeholder="Autor" value="{{ author_filter }}" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.25); border: 2px solid var(--bege); border-radius: 6px; color: #fff; font-family: 'Space Mono', monospace;">
-                    <input type="text" name="time" form="filter-form" placeholder="Data (DD/MM/AAAA)" value="{{ time_filter }}" style="flex: 1; padding: 10px; background: rgba(0,0,0,0.25); border: 2px solid var(--bege); border-radius: 6px; color: #fff; font-family: 'Space Mono', monospace;">
+            <div class="advanced-filters" id="advanced-filters">
+                <div class="advanced-filters-inner">
+                    <input type="text" name="areas" form="filter-form" placeholder="Áreas" value="{{ areas_filter }}" class="filter-input">
+                    <input type="text" name="author" form="filter-form" placeholder="Autor" value="{{ author_filter }}" class="filter-input">
+                    <input type="text" name="time" form="filter-form" placeholder="Data (DD/MM/AAAA)" value="{{ time_filter }}" class="filter-input">
                 </div>
             </div>
 
-            <form id="filter-form" action="/landing-page" method="GET" style="display: none;">
+            <form id="filter-form" action="/landing-page" method="GET">
                 <input type="text" name="title" value="{{ title_filter }}">
             </form>
 
             {% for problem in problems %}
-            <div class="folder" onclick="this.classList.toggle('aberta')">
+            <div class="folder">
                 <div class="folder-tab"></div>
                 <div class="folder-back">
                     <div class="folder-paper">
@@ -126,26 +127,7 @@
         </div>
     </footer>
 
-    <script>
-        document.querySelector('.search-input-container .filter-icon').addEventListener('click', function(e) {
-            e.preventDefault();
-            var filters = document.getElementById('advanced-filters');
-            if (filters.style.display === 'none') {
-                filters.style.display = 'block';
-            } else {
-                document.getElementById('filter-form').submit();
-            }
-        });
-
-        document.getElementById('logout').addEventListener('click', function(e) {
-            e.preventDefault();
-            fetch('/', {
-                method: 'GET',
-                credentials: 'same-origin'
-            }).then(function() {
-                window.location.href = '/';
-            });
-        });
-    </script>
+    <script src="/js/shared.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 </html>

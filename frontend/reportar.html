@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/reportar.css">
     <title>SIRP - Reportar Problema</title>
     <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
@@ -20,7 +21,7 @@
                 <a href="/" id="logout-link">Logout</a>
             </nav>
 
-            <button id="menu" aria-label="Abrir menu" onclick="document.getElementById('menu-extensivel').classList.toggle('aberto')">
+            <button id="menu" aria-label="Abrir menu">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12"></line>
                     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -32,11 +33,11 @@
 
     <main>
         <div class="report-page-wrapper">
-            <form class="report-form" id="chat-widget" style="display: flex; flex-direction: column; gap: 15px;">
+            <form class="report-form" id="chat-widget">
                 <h2>Assistente IA</h2>
 
                 <div class="chat-toggle-area">
-                    <button class="cta" type="button" id="btn-iniciar-chat" onclick="iniciarChat()" style="font-size: 0.8rem; padding: 15px 20px;">
+                    <button class="cta" type="button" id="btn-iniciar-chat">
                         &#129302; Usar Assistente IA
                     </button>
                 </div>
@@ -129,118 +130,7 @@
         </div>
     </footer>
 
-    <script>
-        let chatAtivo = false;
-        let chatFinalizado = false;
-
-        function adicionarMsg(tipo, texto) {
-            const container = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            div.className = 'msg ' + (tipo === 'bot' ? 'msg-bot' : 'msg-user');
-            div.textContent = texto;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function setCarregando(ativo) {
-            document.getElementById('chat-input').disabled = ativo;
-            document.getElementById('chat-send').disabled = ativo;
-            document.getElementById('chat-status').textContent = ativo ? 'Processando...' : '';
-        }
-
-        function setInputHabilitado(habilitado) {
-            document.getElementById('chat-input').disabled = !habilitado;
-            document.getElementById('chat-send').disabled = !habilitado;
-            if (habilitado) document.getElementById('chat-input').focus();
-        }
-
-        async function iniciarChat() {
-            document.getElementById('btn-iniciar-chat').style.display = 'none';
-            document.getElementById('chat-container').classList.add('ativo');
-            chatAtivo = true;
-
-            setCarregando(true);
-            try {
-                const resp = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mensagem: 'iniciar' })
-                });
-                const data = await resp.json();
-                if (data.resposta) {
-                    adicionarMsg('bot', data.resposta);
-                }
-                setInputHabilitado(true);
-            } catch (e) {
-                adicionarMsg('bot', 'Erro ao conectar com o assistente. Tente novamente.');
-            }
-            setCarregando(false);
-        }
-
-        async function enviarMensagem() {
-            if (!chatAtivo || chatFinalizado) return;
-
-            const input = document.getElementById('chat-input');
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            adicionarMsg('user', msg);
-            input.value = '';
-            setCarregando(true);
-
-            try {
-                const resp = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mensagem: msg })
-                });
-                const data = await resp.json();
-
-                if (data.resposta) {
-                    adicionarMsg('bot', data.resposta);
-                }
-
-                if (data.rascunho_pronto && !data.finalizado) {
-                    setInputHabilitado(true);
-                    document.getElementById('chat-status').textContent =
-                        'Revise o rascunho acima e digite "perfeito" para publicar, ou peça ajustes.';
-                }
-
-                if (data.finalizado) {
-                    chatFinalizado = true;
-                    setInputHabilitado(false);
-
-                    if (data.rascunho) {
-                        const r = data.rascunho;
-                        if (r['Título']) document.getElementById('titulo').value = r['Título'];
-                        if (r['Áreas']) document.getElementById('areas').value = r['Áreas'];
-                        if (r['Contexto']) document.getElementById('contexto').value = r['Contexto'];
-                        if (r['Atores']) document.getElementById('atores').value = r['Atores'];
-                        if (r['Impacto']) document.getElementById('impacto').value = r['Impacto'];
-                        if (r['Contornos']) document.getElementById('contornos').value = r['Contornos'];
-                        if (r['Métricas de Sucesso']) document.getElementById('metricas_sucesso').value = r['Métricas de Sucesso'];
-                        if (r['Restrições']) document.getElementById('restricoes').value = r['Restrições'];
-
-                        adicionarMsg('bot', 'Desafio salvo! Os campos foram preenchidos no formulário.');
-                    }
-
-                    document.getElementById('chat-status').textContent = 'Assistente finalizado. Desafio registrado!';
-                }
-            } catch (e) {
-                adicionarMsg('bot', 'Erro de conexão. Tente novamente.');
-            }
-            setCarregando(false);
-        }
-
-        document.getElementById('chat-send').addEventListener('click', enviarMensagem);
-        document.getElementById('chat-input').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') enviarMensagem();
-        });
-
-        document.getElementById('logout-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = '/';
-        });
-    </script>
+    <script src="/js/shared.js"></script>
+    <script src="/js/reportar.js"></script>
 </body>
 </html>

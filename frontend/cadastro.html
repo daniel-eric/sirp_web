@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/base.css">
     <title>SIRP - Cadastro</title>
     <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
@@ -77,15 +77,7 @@
         </div>
     </footer>
 
-    <script>
-        document.getElementById('btn-olho').addEventListener('click', function() {
-            var senha = document.getElementById('password');
-            if (senha.type === 'password') {
-                senha.type = 'text';
-            } else {
-                senha.type = 'password';
-            }
-        });
-    </script>
+    <script src="/js/shared.js"></script>
+    <script src="/js/cadastro.js"></script>
 </body>
 </html>

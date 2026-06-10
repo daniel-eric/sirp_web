@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/base.css">
     <title>SIRP - Login</title>
     <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
@@ -75,23 +75,7 @@
         </div>
     </footer>
 
-    <script>
-        document.getElementById('btn-olho').addEventListener('click', function() {
-            var senha = document.getElementById('passwordInput');
-            if (senha.type === 'password') {
-                senha.type = 'text';
-            } else {
-                senha.type = 'password';
-            }
-        });
-
-        document.getElementById('esqueceu-senha').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('mensagem-sms').classList.add('visivel');
-            setTimeout(function() {
-                document.getElementById('mensagem-sms').classList.remove('visivel');
-            }, 4000);
-        });
-    </script>
+    <script src="/js/shared.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 </html>

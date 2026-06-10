@@ -1,4 +1,4 @@
-from bot_core import ChatbotSIRP
+from .bot_core import ChatbotSIRP
 
 
 class ChatbotSessionManager:
