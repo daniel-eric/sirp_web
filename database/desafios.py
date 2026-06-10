@@ -163,7 +163,7 @@ class DesafioRepository:
         try:
             with self.db_manager.connect(row_factory=sqlite3.Row) as db:
                 db.execute(
-                    "SELECT id, titulo, areas, data_criacao FROM desafios WHERE autor = ? ORDER BY data_criacao DESC",
+                    "SELECT * FROM desafios WHERE autor = ? ORDER BY data_criacao DESC",
                     (autor,)
                 )
                 return [dict(row) for row in db.fetchall()]

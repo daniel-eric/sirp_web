@@ -94,10 +94,17 @@ class SirpApp:
         if not user_data:
             return RedirectResponse(url="/", status_code=303)
 
+        user_desafios = self.desafio_repository.get_by_autor(user_data.username)
+
         return self.templates.TemplateResponse(
             request=request,
             name="perfil.html",
-            context={"request": request, "user": user_data.to_dict(), "logged_user": logged_user}
+            context={
+                "request": request,
+                "user": user_data.to_dict(),
+                "logged_user": logged_user,
+                "desafios": user_desafios
+            }
         )
 
     async def problems_manager(

@@ -101,6 +101,126 @@
 
                 <a href="/landing-page" class="btn-back">Voltar</a>
             </section>
+
+            <section class="profile-desafios">
+                <h3>Meus Desafios</h3>
+
+                {% if desafios %}
+                {% for d in desafios %}
+                <div class="desafio-card">
+                    <div class="desafio-header">
+                        <span class="desafio-num">#{{ d.id }}</span>
+                        <span class="desafio-date">{{ d.data_criacao }}</span>
+                    </div>
+
+                    <div class="desafio-body">
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="titulo">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Título:</span>
+                                <div class="desafio-input-row">
+                                        <input type="text" name="new_value" value="{{ d.titulo or '' }}" id="desafio-{{ d.id }}-titulo" disabled>
+                                    <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-titulo', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="areas">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Áreas:</span>
+                                <div class="desafio-input-row">
+                                        <input type="text" name="new_value" value="{{ d.areas or '' }}" id="desafio-{{ d.id }}-areas" disabled>
+                                    <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-areas', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="contexto">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Contexto:</span>
+                                <div class="desafio-input-row">
+                                        <textarea name="new_value" id="desafio-{{ d.id }}-contexto" disabled>{{ d.contexto or '' }}</textarea>
+                                        <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-contexto', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="atores">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Atores:</span>
+                                <div class="desafio-input-row">
+                                        <input type="text" name="new_value" value="{{ d.atores or '' }}" id="desafio-{{ d.id }}-atores" disabled>
+                                    <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-atores', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="impacto">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Impacto:</span>
+                                <div class="desafio-input-row">
+                                        <textarea name="new_value" id="desafio-{{ d.id }}-impacto" disabled>{{ d.impacto or '' }}</textarea>
+                                    <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-impacto', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="contornos">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Contornos:</span>
+                                <div class="desafio-input-row">
+                                        <textarea name="new_value" id="desafio-{{ d.id }}-contornos" disabled>{{ d.contornos or '' }}</textarea>
+                                    <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-contornos', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="metricas_sucesso">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Métricas de Sucesso:</span>
+                                <div class="desafio-input-row">
+                                        <textarea name="new_value" id="desafio-{{ d.id }}-metricas_sucesso" disabled>{{ d.metricas_sucesso or '' }}</textarea>
+                                    <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-metricas_sucesso', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/update" method="POST" class="desafio-edit-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <input type="hidden" name="attribute" value="restricoes">
+                            <div class="desafio-field">
+                                <span class="desafio-label">Restrições:</span>
+                                <div class="desafio-input-row">
+                                        <textarea name="new_value" id="desafio-{{ d.id }}-restricoes" disabled>{{ d.restricoes or '' }}</textarea>
+                                    <button type="button" class="btn-edit-inline" onclick="toggleEditField('desafio-{{ d.id }}-restricoes', this)">&#9998;</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/api/desafios/delete" method="POST" onsubmit="return confirm('&#9888;&#65039; Excluir este desafio? Esta ação não pode ser desfeita.')" class="desafio-delete-form">
+                            <input type="hidden" name="problem_id" value="{{ d.id }}">
+                            <button type="submit" class="btn-danger-small">Excluir Desafio</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="desafio-empty">Nenhum desafio encontrado. Vá em <a href="/problems-manager">Reportar Problemas</a> para criar um.</p>
+                {% endif %}
+            </section>
         </div>
     </main>
 
@@ -130,7 +250,6 @@
                 input.focus();
                 button.innerHTML = '&#10003;';
                 button.style.color = '#25d366';
-                button.parentElement.parentElement.parentElement.onsubmit = null;
             } else {
                 button.closest('form').submit();
             }
