@@ -27,7 +27,7 @@ def create_problem(
 
     desafio = Desafio(
         titulo=titulo,
-        autor=username,
+        autor=email,
         contato=email,
         areas=areas,
         contexto=contexto,

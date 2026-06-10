@@ -176,7 +176,7 @@ class DesafioRepository:
 
 
 def salvar_desafio_no_banco(detalhamento: dict, username: str, email: str, db_manager: DatabaseManager) -> Optional[int]:
-    detalhamento["Autor"] = username
+    detalhamento["Autor"] = email
     detalhamento["Contato"] = email
 
     desafio = Desafio(

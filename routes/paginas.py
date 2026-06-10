@@ -61,7 +61,7 @@ async def profile(
     if not user_data:
         return RedirectResponse(url="/", status_code=303)
 
-    user_desafios = desafio_repository.get_by_autor(user_data.username)
+    user_desafios = desafio_repository.get_by_autor(logged_user)
 
     return templates.TemplateResponse(
         request=request,

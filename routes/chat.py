@@ -21,7 +21,7 @@ async def api_chat_message(
 
     user_data = user_repository.find_by_identifier(logged_user)
     if user_data:
-        bot.detalhamento_problema["Autor"] = user_data.username
+        bot.detalhamento_problema["Autor"] = user_data.email
         bot.detalhamento_problema["Contato"] = user_data.email
 
     bot.receber_mensagem(mensagem)
