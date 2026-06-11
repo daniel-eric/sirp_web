@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/reportar.css">
-    <title>SIRP - Reportar Problema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Reportar - SIRP</title>
     <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
 </head>
 <body>
@@ -13,124 +14,203 @@
         <a href="/landing-page">
             <img src="/assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
         </a>
-
         <div class="menu-wrapper">
             <nav id="menu-extensivel">
                 <a href="/profile">Perfil</a>
                 <a href="/landing-page">Problemas</a>
                 <a href="/" id="logout-link">Logout</a>
             </nav>
-
             <button id="menu" aria-label="Abrir menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
+                <i class="fa-solid fa-bars" style="font-size: 24px; color: var(--laranja);"></i>
             </button>
         </div>
     </header>
 
-    <main>
-        <div class="report-page-wrapper">
-            <form class="report-form" id="chat-widget">
-                <h2>Assistente IA</h2>
+    <main class="main-container">
+        <div class="chat-wrapper">
+            <div class="chat-header">
+                <h2><i class="fa-solid fa-robot"></i> Analista Técnico SIRP</h2>
+                <span class="status-badge">Conexão Segura</span>
+            </div>
 
-                <div class="chat-toggle-area">
-                    <button class="cta" type="button" id="btn-iniciar-chat">
-                        &#129302; Usar Assistente IA
-                    </button>
+            <div class="chat-messages" id="chat-box">
+                <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                    <span></span><span></span><span></span>
                 </div>
+            </div>
 
-                <div id="chat-container">
-                    <div id="chat-messages"></div>
-                    <div class="chat-input-area">
-                        <input type="text" id="chat-input" placeholder="Digite sua resposta..." disabled>
-                        <button type="button" id="chat-send" disabled>Enviar</button>
-                    </div>
-                    <div class="chat-status" id="chat-status"></div>
-                </div>
-            </form>
+            <div class="chat-input-container">
+                <button id="btn-refresh" title="Reiniciar Conversa" aria-label="Reiniciar conversa">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+                <input type="text" id="input-mensagem" placeholder="Descreva o gargalo ou sua ideia...">
+                <button id="btn-enviar">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
 
-            <form class="report-form" action="/api/desafios/add" method="POST">
-                <h2>Reportar Problema</h2>
+        <div id="modal-final-sirp" class="modal-exportacao">
+            <h3 style="color: var(--bege); margin-bottom: 10px;">Processo Concluído!</h3>
+            <p style="color: var(--branco); font-size: 0.95rem;">Deseja exportar uma imagem de complemento? (Apenas 1 arquivo)</p>
 
-                {% if request.query_params.get('error') == 'add' %}
-                <div id="mensagem-erro" class="visivel">
-                    &#9888;&#65039; Erro ao cadastrar problema. Tente novamente.
-                </div>
-                {% else %}
-                <div id="mensagem-erro">
-                    &#9888;&#65039; Erro ao cadastrar problema.
-                </div>
-                {% endif %}
+            <div class="modal-botoes">
+                <button class="btn-modal imagem" onclick="ativarSeletorMidia('image/*')"><i class="fa-solid fa-image"></i> Imagem</button>
+                <button class="btn-modal recusar" onclick="encerrarEIrParaPerfil()"><i class="fa-solid fa-xmark"></i> Não</button>
+            </div>
 
-                <div class="input-group">
-                    <label for="titulo">Título do Problema:</label>
-                    <input type="text" id="titulo" name="titulo" placeholder="Descreva o título em poucas palavras" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="areas">Áreas Relacionadas:</label>
-                    <input type="text" id="areas" name="areas" placeholder="Ex: TECNOLOGIA DA INFORMAÇÃO | GASTRONOMIA | MARKETING" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="contexto">Contexto:</label>
-                    <textarea id="contexto" name="contexto" rows="4" placeholder="Descreva o contexto do problema..."></textarea>
-                </div>
-
-                <div class="input-group">
-                    <label for="atores">Atores Envolvidos:</label>
-                    <input type="text" id="atores" name="atores" placeholder="Quem está envolvido no problema?">
-                </div>
-
-                <div class="input-group">
-                    <label for="impacto">Impacto:</label>
-                    <textarea id="impacto" name="impacto" rows="4" placeholder="Qual o impacto do problema?"></textarea>
-                </div>
-
-                <div class="input-group">
-                    <label for="contornos">Contornos:</label>
-                    <textarea id="contornos" name="contornos" rows="4" placeholder="Quais os limites e delimitações do problema?"></textarea>
-                </div>
-
-                <div class="input-group">
-                    <label for="metricas_sucesso">Métricas de Sucesso:</label>
-                    <textarea id="metricas_sucesso" name="metricas_sucesso" rows="3" placeholder="Como saberemos que o problema foi resolvido?"></textarea>
-                </div>
-
-                <div class="input-group">
-                    <label for="restricoes">Restrições:</label>
-                    <textarea id="restricoes" name="restricoes" rows="3" placeholder="Quais são as restrições conhecidas?"></textarea>
-                </div>
-
-                <button class="cta" type="submit">Enviar Problema</button>
-
-                <a href="/landing-page" class="link">Voltar para o Feed</a>
-            </form>
+            <input type="file" id="input-midia-final" style="display: none;" accept="image/*" onchange="processarMidiaFinal(this)">
+            <div id="preview-modal-box" style="margin-top: 15px; display: none;"></div>
         </div>
     </main>
 
     <footer>
-        <p id="copy">&COPY; 2026 System Integration Ruralinda Problems. Todos os direitos reservados.</p>
+        <p id="copy">&copy; 2026 System Integration Ruralinda Problems. Todos os direitos reservados.</p>
         <div id="footer-contact">
             <h3>Entre em Contato</h3>
-            <a href="mailto:jezreel.david@ufrpe.br">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-            </a>
-            <a href="tel:+5581983606736">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                </svg>
-            </a>
+            <a href="mailto:jezreel.david@ufrpe.br"><i class="fa-solid fa-envelope" style="font-size: 20px;"></i></a>
+            <a href="tel:+5581983606736"><i class="fa-solid fa-phone" style="font-size: 20px;"></i></a>
         </div>
     </footer>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById('input-mensagem');
+            const btnEnviar = document.getElementById('btn-enviar');
+            const btnRefresh = document.getElementById('btn-refresh');
+            const chatBox = document.getElementById('chat-box');
+            const typingIndicator = document.getElementById('typingIndicator');
+
+            fetch('/api/reset', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => renderizarBot(data.mensagem_inicial || data.message));
+
+            function rolarFinal() { chatBox.scrollTop = chatBox.scrollHeight; }
+
+            function renderizarUser(msg) {
+                const div = document.createElement('div');
+                div.className = 'mensagem user';
+                div.innerHTML = `<div class="texto"><strong>Você:</strong> ${msg}</div>`;
+                chatBox.insertBefore(div, typingIndicator);
+                rolarFinal();
+            }
+
+            function renderizarBot(msg, abstracao, concluido) {
+                let tabelaHtml = '';
+                if (abstracao && typeof abstracao === 'object' && Object.keys(abstracao).length > 0 && abstracao["Contexto"]) {
+                    tabelaHtml = `<table class="tabela-abstracao"><tbody>`;
+                    for (const [chave, valor] of Object.entries(abstracao)) {
+                        if (valor && valor.trim() !== "") {
+                            tabelaHtml += `<tr><td><strong>${chave}</strong></td><td>${valor}</td></tr>`;
+                        }
+                    }
+                    tabelaHtml += `</tbody></table>`;
+                }
+
+                const div = document.createElement('div');
+                div.className = 'mensagem bot';
+                div.innerHTML = `<div class="texto"><strong>Analista SIRP:</strong><br>${tabelaHtml}${msg}</div>`;
+                chatBox.insertBefore(div, typingIndicator);
+                rolarFinal();
+
+                if (concluido) {
+                    input.disabled = true;
+                    btnEnviar.disabled = true;
+                    input.placeholder = "Relato concluído e em processamento...";
+                    document.getElementById('modal-final-sirp').classList.add('ativo');
+                }
+            }
+
+            async function enviar() {
+                const txt = input.value.trim();
+                if (!txt) return;
+
+                renderizarUser(txt);
+                input.value = '';
+                input.disabled = true;
+                btnEnviar.disabled = true;
+                typingIndicator.style.display = 'flex';
+                rolarFinal();
+
+                try {
+                    const res = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mensagem: txt })
+                    });
+                    const data = await res.json();
+                    typingIndicator.style.display = 'none';
+                    input.disabled = false;
+                    btnEnviar.disabled = false;
+                    input.focus();
+
+                    renderizarBot(
+                        data.mensagem || data.resposta_bot || data.resposta,
+                        data.abstracao || data.dossie_parcial || data.rascunho,
+                        data.concluido || data.finalizado
+                    );
+                } catch (e) {
+                    typingIndicator.style.display = 'none';
+                    renderizarBot("⚠️ Houve um erro ao processar. Tente novamente.");
+                    input.disabled = false;
+                    btnEnviar.disabled = false;
+                }
+            }
+
+            btnEnviar.onclick = enviar;
+            input.onkeydown = (e) => { if (e.key === 'Enter') enviar(); };
+
+            btnRefresh.onclick = () => {
+                if (confirm("Deseja realmente limpar o histórico e reiniciar o relato?")) {
+                    fetch('/api/reset', { method: 'POST' })
+                        .then(res => res.json())
+                        .then(data => {
+                            document.querySelectorAll('.mensagem').forEach(el => el.remove());
+                            renderizarBot(data.mensagem_inicial || data.message);
+                            input.disabled = false;
+                            btnEnviar.disabled = false;
+                            input.placeholder = "Descreva o gargalo ou sua ideia...";
+                        });
+                }
+            };
+        });
+
+        function ativarSeletorMidia(tipo) {
+            const input = document.getElementById('input-midia-final');
+            input.accept = tipo;
+            input.click();
+        }
+
+        function processarMidiaFinal(input) {
+            const arquivo = input.files[0];
+            if (!arquivo) return;
+
+            const formData = new FormData();
+            formData.append('arquivo', arquivo);
+
+            const preview = document.getElementById('preview-modal-box');
+            preview.style.display = 'block';
+            preview.innerHTML = `<p style="color: var(--laranja);">Processando imagem no servidor...</p>`;
+
+            fetch('/api/upload_final', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(dados => {
+                    if (dados.success) {
+                        preview.innerHTML = `<p style="color: #4cd137;">Anexo salvo! Redirecionando...</p>`;
+                        setTimeout(encerrarEIrParaPerfil, 1500);
+                    } else {
+                        preview.innerHTML = `<p style="color: #e84118;">Erro ao anexar arquivo.</p>`;
+                    }
+                });
+        }
+
+        function encerrarEIrParaPerfil() {
+            document.getElementById('modal-final-sirp').classList.remove('ativo');
+            document.body.style.transition = 'opacity 0.8s ease';
+            document.body.style.opacity = '0';
+            setTimeout(() => { window.location.href = "/profile"; }, 800);
+        }
+    </script>
     <script src="/js/shared.js"></script>
-    <script src="/js/reportar.js"></script>
 </body>
 </html>

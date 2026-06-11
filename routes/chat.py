@@ -26,22 +26,45 @@ async def api_chat_message(
 
     bot.receber_mensagem(mensagem)
 
+    desafio_id = None
     if bot.finalizado and user_data and bot.detalhamento_problema.get("Título"):
-        salvar_desafio_no_banco(
+        desafio_id = salvar_desafio_no_banco(
             bot.detalhamento_problema,
             user_data.username,
             user_data.email,
             db_manager
         )
-        chatbot_sessions.remover(logged_user)
-    elif bot.finalizado:
-        chatbot_sessions.remover(logged_user)
+        bot.ultimo_desafio_id = desafio_id
+
+    rascunho_atual = bot.detalhamento_problema if (bot.finalizado or bot.rascunho_pronto) else None
 
     return {
         "resposta": bot.ultima_resposta,
+        "resposta_bot": bot.ultima_resposta,
+        "mensagem": bot.ultima_resposta,
         "finalizado": bot.finalizado,
+        "concluido": bot.finalizado,
         "rascunho_pronto": bot.rascunho_pronto,
-        "rascunho": bot.detalhamento_problema if (bot.finalizado or bot.rascunho_pronto) else None
+        "rascunho": rascunho_atual,
+        "abstracao": rascunho_atual,
+        "dossie_parcial": rascunho_atual,
+        "desafio_id": desafio_id
+    }
+
+
+@router.post("/api/reset")
+async def api_reset_chat(
+    logged_user: str | None = Cookie(default=None, alias="logged_user")
+):
+    if not logged_user:
+        return {"error": "Não autenticado"}
+
+    bot = chatbot_sessions.reset_session(logged_user)
+
+    return {
+        "success": True,
+        "mensagem_inicial": bot.ultima_resposta,
+        "message": "Histórico redefinido com sucesso."
     }
 
 

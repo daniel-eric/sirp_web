@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Form, Cookie
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, Response
 from backend.dependencies import user_repository, desafio_repository
 from database.desafios import Desafio
 
@@ -74,3 +74,11 @@ async def remove_problem(
         return RedirectResponse(url="/problems-manager", status_code=303)
 
     return RedirectResponse(url="/problems-manager?error=delete", status_code=303)
+
+
+@router.get("/api/desafios/{desafio_id}/imagem")
+async def servir_imagem(desafio_id: int):
+    blob = desafio_repository.get_midia_blob(desafio_id)
+    if blob is None:
+        return Response(status_code=404)
+    return Response(content=blob, media_type="image/webp")

@@ -16,11 +16,12 @@ class Desafio:
     contornos: str = ""
     metricas_sucesso: str = ""
     restricoes: str = ""
+    midia_blob: Optional[bytes] = None
     id: Optional[int] = None
     data_criacao: Optional[str] = None
 
     def to_dict(self) -> dict:
-        return {
+        d = {
             "id": self.id,
             "titulo": self.titulo,
             "autor": self.autor,
@@ -34,6 +35,9 @@ class Desafio:
             "restricoes": self.restricoes,
             "data_criacao": self.data_criacao
         }
+        if self.midia_blob is not None:
+            d["tem_midia"] = True
+        return d
 
 
 class DesafioRepository:
@@ -46,14 +50,16 @@ class DesafioRepository:
                 sql = '''
                     INSERT INTO desafios
                         (titulo, autor, contato, areas, contexto, atores,
-                         impacto, contornos, metricas_sucesso, restricoes)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                         impacto, contornos, metricas_sucesso, restricoes,
+                         midia_blob)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 '''
                 cursor = db.execute(sql, (
                     desafio.titulo, desafio.autor, desafio.contato,
                     desafio.areas, desafio.contexto, desafio.atores,
                     desafio.impacto, desafio.contornos,
-                    desafio.metricas_sucesso, desafio.restricoes
+                    desafio.metricas_sucesso, desafio.restricoes,
+                    desafio.midia_blob
                 ))
                 return cursor.lastrowid
         except sqlite3.Error as e:
@@ -100,7 +106,8 @@ class DesafioRepository:
     ) -> list[dict]:
         try:
             with self.db_manager.connect(row_factory=sqlite3.Row) as db:
-                sql = "SELECT * FROM desafios WHERE 1=1"
+                cols = "id, titulo, autor, contato, areas, contexto, atores, impacto, contornos, metricas_sucesso, restricoes, data_criacao"
+                sql = f"SELECT {cols}, CASE WHEN midia_blob IS NOT NULL THEN 1 ELSE 0 END AS tem_midia FROM desafios WHERE 1=1"
                 parameters: list[str] = []
 
                 if titulo and titulo.strip():
@@ -147,6 +154,34 @@ class DesafioRepository:
             print(f"General exception in update_desafio: {e}")
             return False
 
+    def update_midia_blob(self, desafio_id: int, blob: bytes) -> bool:
+        try:
+            with self.db_manager.connect() as db:
+                cursor = db.execute(
+                    "UPDATE desafios SET midia_blob = ? WHERE id = ?",
+                    (blob, desafio_id)
+                )
+                return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            print(f"SQLite error in update_midia_blob: {e}")
+            return False
+        except Exception as e:
+            print(f"General exception in update_midia_blob: {e}")
+            return False
+
+    def get_midia_blob(self, desafio_id: int) -> Optional[bytes]:
+        try:
+            with self.db_manager.connect() as db:
+                db.execute("SELECT midia_blob FROM desafios WHERE id = ?", (desafio_id,))
+                row = db.fetchone()
+                return row[0] if row else None
+        except sqlite3.Error as e:
+            print(f"SQLite error in get_midia_blob: {e}")
+            return None
+        except Exception as e:
+            print(f"General exception in get_midia_blob: {e}")
+            return None
+
     def delete(self, desafio_id: int) -> bool:
         try:
             with self.db_manager.connect() as db:
@@ -162,8 +197,9 @@ class DesafioRepository:
     def get_by_autor(self, autor: str) -> list[dict]:
         try:
             with self.db_manager.connect(row_factory=sqlite3.Row) as db:
+                cols = "id, titulo, autor, contato, areas, contexto, atores, impacto, contornos, metricas_sucesso, restricoes, data_criacao"
                 db.execute(
-                    "SELECT * FROM desafios WHERE autor = ? ORDER BY data_criacao DESC",
+                    f"SELECT {cols}, CASE WHEN midia_blob IS NOT NULL THEN 1 ELSE 0 END AS tem_midia FROM desafios WHERE autor = ? ORDER BY data_criacao DESC",
                     (autor,)
                 )
                 return [dict(row) for row in db.fetchall()]
@@ -175,7 +211,13 @@ class DesafioRepository:
             return []
 
 
-def salvar_desafio_no_banco(detalhamento: dict, username: str, email: str, db_manager: DatabaseManager) -> Optional[int]:
+def salvar_desafio_no_banco(
+    detalhamento: dict,
+    username: str,
+    email: str,
+    db_manager: DatabaseManager,
+    midia_blob: bytes | None = None
+) -> Optional[int]:
     detalhamento["Autor"] = email
     detalhamento["Contato"] = email
 
@@ -189,7 +231,8 @@ def salvar_desafio_no_banco(detalhamento: dict, username: str, email: str, db_ma
         impacto=detalhamento.get("Impacto", ""),
         contornos=detalhamento.get("Contornos", ""),
         metricas_sucesso=detalhamento.get("Métricas de Sucesso", ""),
-        restricoes=detalhamento.get("Restrições", "")
+        restricoes=detalhamento.get("Restrições", ""),
+        midia_blob=midia_blob
     )
 
     repo = DesafioRepository(db_manager)

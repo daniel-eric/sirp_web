@@ -90,6 +90,12 @@
                             <p class="folder-tags">{{ problem.areas }}</p>
                         </div>
                     </div>
+
+                    {% if problem.tem_midia %}
+                    <div class="polaroid">
+                        <img src="/api/desafios/{{ problem.id }}/imagem" alt="Imagem do problema" loading="lazy">
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% else %}

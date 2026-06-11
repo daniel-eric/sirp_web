@@ -20,3 +20,20 @@ class ChatbotSessionManager:
         if not sessao:
             return ""
         return sessao.ultima_resposta
+
+    def reset_session(self, user_email: str):
+        sessao = ChatbotSIRP()
+        self._sessoes[user_email] = sessao
+        return sessao
+
+    def get_rascunho(self, user_email: str) -> dict | None:
+        sessao = self._sessoes.get(user_email)
+        if not sessao:
+            return None
+        return sessao.detalhamento_problema
+
+    def is_finalizado(self, user_email: str) -> bool:
+        sessao = self._sessoes.get(user_email)
+        if not sessao:
+            return False
+        return sessao.finalizado

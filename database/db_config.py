@@ -87,7 +87,8 @@ def db_desafios_init():
                     contornos TEXT,
                     metricas_sucesso TEXT,
                     restricoes TEXT,
-                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    midia_blob BLOB
                 )
             ''')
     except sqlite3.OperationalError as e:
