@@ -56,17 +56,17 @@ sirp_web/
 
 ## Stack Tecnológica
 
-| Camada         | Tecnologia                            |
-|----------------|---------------------------------------|
-| **Runtime**    | Python 3.12                           |
-| **Framework**  | FastAPI 0.136.3 (ASGI)                |
-| **Templates**  | Jinja2 (via `fastapi.templating`)     |
-| **Banco**      | SQLite 3 (via `sqlite3` stdlib)       |
-| **IA**         | Google Gemini 2.5 Flash (JSON mode)   |
+| Camada         | Tecnologia                             |
+|----------------|----------------------------------------|
+| **Runtime**    | Python 3.12                            |
+| **Framework**  | FastAPI 0.136.3 (ASGI)                 | 
+| **Templates**  | Jinja2 (via `fastapi.templating`)      |
+| **Banco**      | SQLite 3 (via `sqlite3` stdlib)        |
+| **IA**         | Google Gemini 2.5 Flash (JSON mode)    |
 | **Imagens**    | Pillow 10+ (compressão WebP quality 65)|
-| **Frontend**   | HTML5 + CSS3 + SVG + JS vanilla       |
-| **Servidor**   | Uvicorn                               |
-| **Auth**       | Cookie HTTP-only (`logged_user`)      |
+| **Frontend**   | HTML5 + CSS3 + SVG + JS vanilla        |
+| **Servidor**   | Uvicorn                                |
+| **Auth**       | Cookie HTTP-only (`logged_user`)       |
 
 ## Funcionalidades
 
@@ -98,7 +98,7 @@ sirp_web/
 
 ### `users`
 
-| Coluna   | Tipo    | Restrições              |
+| Coluna   | Tipo    | Restrições               |
 |----------|---------|--------------------------|
 | id       | INTEGER | PRIMARY KEY AUTOINCREMENT|
 | username | TEXT    | NOT NULL                 |
@@ -108,7 +108,7 @@ sirp_web/
 
 ### `desafios`
 
-| Coluna           | Tipo      | Restrições              |
+| Coluna           | Tipo      | Restrições               |
 |------------------|-----------|--------------------------|
 | id               | INTEGER   | PRIMARY KEY AUTOINCREMENT|
 | titulo           | TEXT      | NOT NULL                 |
@@ -136,8 +136,8 @@ sirp_web/
 | `/problems-manager`| Obrigatória  | Criar problema via chatbot   |
 
 ### POST (Ações)
-| Rota                               | Autenticação | Descrição                          |
-|-----------------------------------|--------------|--------------------------------------|
+| Rota                               | Autenticação | Descrição                            |
+|------------------------------------|--------------|--------------------------------------|
 | `/login`                           | —            | Autenticar usuário                   |
 | `/sign-up`                         | —            | Registrar novo usuário               |
 | `/api/profile/update-username`     | Obrigatória  | Atualizar nome de usuário            |
@@ -154,8 +154,8 @@ sirp_web/
 | `/api/upload_final`                | Obrigatória  | Upload final + vincular BLOB ao desafio|
 
 ### GET (Dados)
-| Rota                               | Autenticação | Descrição                          |
-|-----------------------------------|--------------|--------------------------------------|
+| Rota                               | Autenticação | Descrição                            |
+|------------------------------------|--------------|--------------------------------------|
 | `/api/chat/state`                  | Obrigatória  | Estado atual da sessão do chatbot    |
 | `/api/desafios/{id}/imagem`        | —            | Servir imagem BLOB do desafio        |
 
