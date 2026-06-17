@@ -1,6 +1,8 @@
+import secrets
 from fastapi import APIRouter, Response, Form, status
 from fastapi.responses import RedirectResponse
 from backend.dependencies import user_repository
+from backend.email_service import send_password_email
 from database.users import User
 
 router = APIRouter()
@@ -36,3 +38,21 @@ def process_sign_up(
         return RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
     return RedirectResponse(url="/sign-up?error=signup", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@router.post("/api/forgot-password")
+def forgot_password(usernameInput: str = Form(...)):
+    user = user_repository.find_by_identifier(usernameInput)
+
+    if not user or not user.email:
+        return {"success": False}
+
+    new_password = secrets.token_urlsafe(10)
+    if not user_repository.update_password(user.email, new_password):
+        return {"success": False, "error": "db_error"}
+
+    try:
+        send_password_email(user.email, new_password)
+        return {"success": True}
+    except Exception:
+        return {"success": False, "error": "email_failed"}
