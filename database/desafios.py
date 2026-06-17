@@ -17,6 +17,7 @@ class Desafio:
     metricas_sucesso: str = ""
     restricoes: str = ""
     midia_blob: Optional[bytes] = None
+    video_path: Optional[str] = None
     id: Optional[int] = None
     data_criacao: Optional[str] = None
 
@@ -37,6 +38,8 @@ class Desafio:
         }
         if self.midia_blob is not None:
             d["tem_midia"] = True
+        if self.video_path:
+            d["tem_video"] = True
         return d
 
 
@@ -51,15 +54,15 @@ class DesafioRepository:
                     INSERT INTO desafios
                         (titulo, autor, contato, areas, contexto, atores,
                          impacto, contornos, metricas_sucesso, restricoes,
-                         midia_blob)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                         midia_blob, video_path)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 '''
                 cursor = db.execute(sql, (
                     desafio.titulo, desafio.autor, desafio.contato,
                     desafio.areas, desafio.contexto, desafio.atores,
                     desafio.impacto, desafio.contornos,
                     desafio.metricas_sucesso, desafio.restricoes,
-                    desafio.midia_blob
+                    desafio.midia_blob, desafio.video_path
                 ))
                 return cursor.lastrowid
         except sqlite3.Error as e:
@@ -87,7 +90,8 @@ class DesafioRepository:
                         contornos=row["contornos"],
                         metricas_sucesso=row["metricas_sucesso"],
                         restricoes=row["restricoes"],
-                        data_criacao=row["data_criacao"]
+                        data_criacao=row["data_criacao"],
+                        video_path=row.get("video_path")
                     )
             return None
         except sqlite3.Error as e:
@@ -106,8 +110,8 @@ class DesafioRepository:
     ) -> list[dict]:
         try:
             with self.db_manager.connect(row_factory=sqlite3.Row) as db:
-                cols = "id, titulo, autor, contato, areas, contexto, atores, impacto, contornos, metricas_sucesso, restricoes, data_criacao"
-                sql = f"SELECT {cols}, CASE WHEN midia_blob IS NOT NULL THEN 1 ELSE 0 END AS tem_midia FROM desafios WHERE 1=1"
+                cols = "id, titulo, autor, contato, areas, contexto, atores, impacto, contornos, metricas_sucesso, restricoes, data_criacao, video_path"
+                sql = f"SELECT {cols}, CASE WHEN midia_blob IS NOT NULL THEN 1 ELSE 0 END AS tem_midia, CASE WHEN video_path IS NOT NULL THEN 1 ELSE 0 END AS tem_video FROM desafios WHERE 1=1"
                 parameters: list[str] = []
 
                 if titulo and titulo.strip():
@@ -169,6 +173,34 @@ class DesafioRepository:
             print(f"General exception in update_midia_blob: {e}")
             return False
 
+    def update_video_path(self, desafio_id: int, video_path: str) -> bool:
+        try:
+            with self.db_manager.connect() as db:
+                cursor = db.execute(
+                    "UPDATE desafios SET video_path = ? WHERE id = ?",
+                    (video_path, desafio_id)
+                )
+                return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            print(f"SQLite error in update_video_path: {e}")
+            return False
+        except Exception as e:
+            print(f"General exception in update_video_path: {e}")
+            return False
+
+    def get_video_path(self, desafio_id: int) -> Optional[str]:
+        try:
+            with self.db_manager.connect() as db:
+                db.execute("SELECT video_path FROM desafios WHERE id = ?", (desafio_id,))
+                row = db.fetchone()
+                return row[0] if row else None
+        except sqlite3.Error as e:
+            print(f"SQLite error in get_video_path: {e}")
+            return None
+        except Exception as e:
+            print(f"General exception in get_video_path: {e}")
+            return None
+
     def get_midia_blob(self, desafio_id: int) -> Optional[bytes]:
         try:
             with self.db_manager.connect() as db:
@@ -197,9 +229,9 @@ class DesafioRepository:
     def get_by_autor(self, autor: str) -> list[dict]:
         try:
             with self.db_manager.connect(row_factory=sqlite3.Row) as db:
-                cols = "id, titulo, autor, contato, areas, contexto, atores, impacto, contornos, metricas_sucesso, restricoes, data_criacao"
+                cols = "id, titulo, autor, contato, areas, contexto, atores, impacto, contornos, metricas_sucesso, restricoes, data_criacao, video_path"
                 db.execute(
-                    f"SELECT {cols}, CASE WHEN midia_blob IS NOT NULL THEN 1 ELSE 0 END AS tem_midia FROM desafios WHERE autor = ? ORDER BY data_criacao DESC",
+                    f"SELECT {cols}, CASE WHEN midia_blob IS NOT NULL THEN 1 ELSE 0 END AS tem_midia, CASE WHEN video_path IS NOT NULL THEN 1 ELSE 0 END AS tem_video FROM desafios WHERE autor = ? ORDER BY data_criacao DESC",
                     (autor,)
                 )
                 return [dict(row) for row in db.fetchall()]
@@ -216,7 +248,8 @@ def salvar_desafio_no_banco(
     username: str,
     email: str,
     db_manager: DatabaseManager,
-    midia_blob: bytes | None = None
+    midia_blob: bytes | None = None,
+    video_path: str | None = None
 ) -> Optional[int]:
     detalhamento["Autor"] = email
     detalhamento["Contato"] = email
@@ -232,7 +265,8 @@ def salvar_desafio_no_banco(
         contornos=detalhamento.get("Contornos", ""),
         metricas_sucesso=detalhamento.get("Métricas de Sucesso", ""),
         restricoes=detalhamento.get("Restrições", ""),
-        midia_blob=midia_blob
+        midia_blob=midia_blob,
+        video_path=video_path
     )
 
     repo = DesafioRepository(db_manager)

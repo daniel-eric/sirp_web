@@ -72,8 +72,8 @@
 
             {% for problem in problems %}
             <div class="folder">
-                <div class="folder-tab"></div>
                 <div class="folder-back">
+                    <div class="folder-tab"></div>
                     <div class="folder-paper">
                         <div class="paper-field">CONTEXTO: {{ problem.contexto }}</div>
                         <div class="paper-field">ÁREAS: {{ problem.areas }}</div>
@@ -94,6 +94,14 @@
                     {% if problem.tem_midia %}
                     <div class="polaroid">
                         <img src="/api/desafios/{{ problem.id }}/imagem" alt="Imagem do problema" loading="lazy">
+                    </div>
+                    {% endif %}
+
+                    {% if problem.tem_video %}
+                    <div class="midia-video">
+                        <video class="video-player" controls preload="metadata" playsinline>
+                            <source src="/api/desafios/{{ problem.id }}/video" type="video/mp4">
+                        </video>
                     </div>
                     {% endif %}
                 </div>

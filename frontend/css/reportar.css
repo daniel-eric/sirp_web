@@ -164,7 +164,9 @@
 .modal-botoes { display: flex; justify-content: center; gap: 0.9375rem; margin-top: 1.25rem; }
 .btn-modal { padding: 0.625rem 1.25rem; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: bold; transition: 0.2s; }
 .btn-modal.imagem { background: var(--laranja); color: var(--branco); }
-.btn-modal.recusar { background: #666; color: var(--branco); }
+.btn-modal.video { background: #2d6a9f; color: var(--branco); }
+.btn-modal.concluir { background: var(--verde-escuro); color: var(--branco); }
+.btn-modal:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 
 .typing-indicator {
     display: flex;

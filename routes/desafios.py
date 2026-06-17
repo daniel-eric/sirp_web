@@ -1,5 +1,6 @@
+import os
 from fastapi import APIRouter, Form, Cookie
-from fastapi.responses import RedirectResponse, Response
+from fastapi.responses import RedirectResponse, Response, FileResponse
 from backend.dependencies import user_repository, desafio_repository
 from database.desafios import Desafio
 
@@ -82,3 +83,11 @@ async def servir_imagem(desafio_id: int):
     if blob is None:
         return Response(status_code=404)
     return Response(content=blob, media_type="image/webp")
+
+
+@router.get("/api/desafios/{desafio_id}/video")
+async def servir_video(desafio_id: int):
+    video_path = desafio_repository.get_video_path(desafio_id)
+    if not video_path or not os.path.exists(video_path):
+        return Response(status_code=404)
+    return FileResponse(video_path, media_type="video/mp4")

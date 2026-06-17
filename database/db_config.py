@@ -99,3 +99,14 @@ def db_desafios_init():
 
 db_user_init()
 db_desafios_init()
+
+def db_video_migration():
+    try:
+        with DatabaseConnection() as db:
+            db.execute("ALTER TABLE desafios ADD COLUMN video_path TEXT")
+    except sqlite3.OperationalError:
+        pass  # coluna já existe
+    except Exception as e:
+        print(f"Erro na migração video_path: {e}")
+
+db_video_migration()

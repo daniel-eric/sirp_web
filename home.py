@@ -1,3 +1,4 @@
+import shutil
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
@@ -10,6 +11,9 @@ from routes.chat import router as chat_router
 from routes.media import router as media_router
 
 load_dotenv()
+
+if not shutil.which("ffmpeg"):
+    print("⚠️ ffmpeg não encontrado no sistema. Upload e conversão de vídeos serão desativados.")
 
 app = FastAPI()
 

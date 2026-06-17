@@ -52,14 +52,15 @@
 
         <div id="modal-final-sirp" class="modal-exportacao">
             <h3 style="color: var(--bege); margin-bottom: 10px;">Processo Concluído!</h3>
-            <p style="color: var(--branco); font-size: 0.95rem;">Deseja exportar uma imagem de complemento? (Apenas 1 arquivo)</p>
+            <p style="color: var(--branco); font-size: 0.95rem;">Deseja adicionar mídias complementares?</p>
 
             <div class="modal-botoes">
-                <button class="btn-modal imagem" onclick="ativarSeletorMidia('image/*')"><i class="fa-solid fa-image"></i> Imagem</button>
-                <button class="btn-modal recusar" onclick="encerrarEIrParaPerfil()"><i class="fa-solid fa-xmark"></i> Não</button>
+                <button class="btn-modal imagem" id="btn-add-imagem" onclick="ativarSeletorMidia('image/*')"><i class="fa-solid fa-image"></i> Adicionar Imagem</button>
+                <button class="btn-modal video" id="btn-add-video" onclick="ativarSeletorMidia('video/*')"><i class="fa-solid fa-video"></i> Adicionar Vídeo</button>
+                <button class="btn-modal concluir" onclick="encerrarEIrParaPerfil()"><i class="fa-solid fa-check"></i> Concluir</button>
             </div>
 
-            <input type="file" id="input-midia-final" style="display: none;" accept="image/*" onchange="processarMidiaFinal(this)">
+            <input type="file" id="input-midia-final" style="display: none;" onchange="processarMidiaFinal(this)">
             <div id="preview-modal-box" style="margin-top: 15px; display: none;"></div>
         </div>
     </main>
@@ -185,21 +186,28 @@
             const arquivo = input.files[0];
             if (!arquivo) return;
 
-            const formData = new FormData();
-            formData.append('arquivo', arquivo);
-
+            const ehVideo = arquivo.type.startsWith('video/');
             const preview = document.getElementById('preview-modal-box');
             preview.style.display = 'block';
-            preview.innerHTML = `<p style="color: var(--laranja);">Processando imagem no servidor...</p>`;
+            preview.innerHTML = `<p style="color: var(--laranja);">Processando ${ehVideo ? 'vídeo' : 'imagem'} no servidor...</p>`;
+
+            const formData = new FormData();
+            formData.append('arquivo', arquivo);
 
             fetch('/api/upload_final', { method: 'POST', body: formData })
                 .then(res => res.json())
                 .then(dados => {
                     if (dados.success) {
-                        preview.innerHTML = `<p style="color: #4cd137;">Anexo salvo! Redirecionando...</p>`;
-                        setTimeout(encerrarEIrParaPerfil, 1500);
+                        preview.innerHTML = `<p style="color: #4cd137;">✓ ${ehVideo ? 'Vídeo' : 'Imagem'} salvo(a) com sucesso!</p>`;
+                        if (ehVideo) {
+                            document.getElementById('btn-add-video').disabled = true;
+                            document.getElementById('btn-add-video').innerHTML = '<i class="fa-solid fa-check"></i> Vídeo adicionado';
+                        } else {
+                            document.getElementById('btn-add-imagem').disabled = true;
+                            document.getElementById('btn-add-imagem').innerHTML = '<i class="fa-solid fa-check"></i> Imagem adicionada';
+                        }
                     } else {
-                        preview.innerHTML = `<p style="color: #e84118;">Erro ao anexar arquivo.</p>`;
+                        preview.innerHTML = `<p style="color: #e84118;">Erro: ${dados.error || 'Falha no upload'}</p>`;
                     }
                 });
         }
