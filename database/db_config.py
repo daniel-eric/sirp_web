@@ -97,8 +97,63 @@ def db_desafios_init():
         print(f"Erro inesperado na tabela 'desafios': {e}")
 
 
+def db_chat_init():
+    try:
+        with DatabaseConnection() as db:
+            db.execute("""
+                CREATE TABLE IF NOT EXISTS conversas (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome TEXT NOT NULL,
+                    tipo TEXT NOT NULL DEFAULT 'group',
+                    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+            db.execute("""
+                CREATE TABLE IF NOT EXISTS participantes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    conversa_id INTEGER NOT NULL,
+                    user_email TEXT NOT NULL,
+                    FOREIGN KEY (conversa_id) REFERENCES conversas(id),
+                    UNIQUE(conversa_id, user_email)
+                )
+            """)
+            db.execute("""
+                CREATE TABLE IF NOT EXISTS mensagens (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    conversa_id INTEGER NOT NULL,
+                    autor_email TEXT NOT NULL,
+                    conteudo TEXT NOT NULL,
+                    data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (conversa_id) REFERENCES conversas(id)
+                )
+            """)
+    except sqlite3.OperationalError as e:
+        print(f"Erro ao criar tabelas do chat: {e}")
+    except Exception as e:
+        print(f"Erro inesperado na inicialização do chat: {e}")
+
+def db_bloqueios_init():
+    try:
+        with DatabaseConnection() as db:
+            db.execute("""
+                CREATE TABLE IF NOT EXISTS bloqueios (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    conversa_id INTEGER NOT NULL,
+                    user_email TEXT NOT NULL,
+                    data_bloqueio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (conversa_id) REFERENCES conversas(id),
+                    UNIQUE(conversa_id, user_email)
+                )
+            """)
+    except sqlite3.OperationalError as e:
+        print(f"Erro ao criar tabela 'bloqueios': {e}")
+    except Exception as e:
+        print(f"Erro inesperado na tabela 'bloqueios': {e}")
+
 db_user_init()
 db_desafios_init()
+db_chat_init()
+db_bloqueios_init()
 
 def db_video_migration():
     try:

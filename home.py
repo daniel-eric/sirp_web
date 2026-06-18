@@ -8,6 +8,7 @@ from routes.auth import router as auth_router
 from routes.perfil import router as perfil_router
 from routes.desafios import router as desafios_router
 from routes.chat import router as chat_router
+from routes.chat_grupo import router as chat_grupo_router
 from routes.media import router as media_router
 
 load_dotenv()
@@ -27,4 +28,5 @@ app.include_router(auth_router)
 app.include_router(perfil_router)
 app.include_router(desafios_router)
 app.include_router(chat_router)
+app.include_router(chat_grupo_router)
 app.include_router(media_router)

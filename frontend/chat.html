@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Chat - SIRP</title>
+    <link rel="icon" type="image/png" href="/assets/sirp_logo_min.png">
+</head>
+<body data-logged-user="{{ logged_user }}">
+    <header>
+        <a href="/landing-page">
+            <img src="/assets/sirp_logo_max.png" alt="Logo SIRP" class="logo">
+        </a>
+        <div class="menu-wrapper">
+            <nav id="menu-extensivel">
+                <a href="/profile">Perfil</a>
+                <a href="/landing-page">Problemas</a>
+                <a href="/" id="logout-link">Logout</a>
+            </nav>
+            <button id="menu" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars" style="font-size: 24px; color: var(--laranja);"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="chat-layout">
+        <aside class="chat-sidebar" id="chat-sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fa-solid fa-comment-dots"></i> Conversas</h3>
+                <div class="sidebar-actions">
+                    <button id="btn-nova-msg" class="btn-sidebar-action" title="Nova mensagem">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button id="btn-novo-grupo" class="btn-sidebar-action" title="Criar novo grupo">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="sidebar-conversas" id="sidebar-conversas">
+                <div class="sidebar-placeholder">Nenhuma conversa ainda.</div>
+            </div>
+        </aside>
+
+        <section class="chat-wrapper" id="chat-container">
+            <div class="chat-empty" id="chat-empty">
+                <i class="fa-solid fa-comments"></i>
+                <p>Selecione uma conversa para começar</p>
+            </div>
+
+            <div class="chat-active" id="chat-active" style="display:none;">
+                <div class="chat-header">
+                    <div class="chat-header-left">
+                        <h2 id="chat-header-name">Carregando...</h2>
+                        <span class="chat-header-meta" id="chat-header-meta"></span>
+                    </div>
+                    <div class="chat-header-actions">
+                        <span class="secure-connection" id="secure-connection">Conexão segura</span>
+                        <button id="btn-bloquear" class="btn-lock" style="display:none;">
+                            <i class="fa-solid fa-lock-open lock-icon"></i>
+                            <span class="lock-text">Bloquear</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <div class="chat-messages-placeholder" id="messages-placeholder">
+                        Nenhuma mensagem ainda. Seja o primeiro a escrever!
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <input type="text" id="input-message" placeholder="Digite sua mensagem...">
+                    <button id="btn-send" aria-label="Enviar mensagem">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="blocked-overlay-message" id="blocked-banner">
+                    <i class="fa-solid fa-ban"></i> Esta conversa está bloqueada. Clique em Desbloquear para retomar.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Novo Grupo -->
+    <div class="modal-overlay" id="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Criar Novo Grupo</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label for="grupo-nome">Nome do grupo</label>
+                <input type="text" id="grupo-nome" placeholder="Ex: Grupo de Estudos" class="modal-input">
+                <label for="grupo-participantes">Participantes (emails separados por vírgula)</label>
+                <input type="text" id="grupo-participantes" placeholder="email1@ufrpe.br, email2@ufrpe.br" class="modal-input">
+                <div class="modal-error" id="modal-error"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal cancelar" id="modal-cancelar">Cancelar</button>
+                <button class="btn-modal concluir" id="modal-criar">Criar Grupo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Nova Mensagem -->
+    <div class="modal-overlay" id="modal-dm-overlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nova Mensagem</h3>
+                <button class="modal-close" id="modal-dm-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label for="dm-busca">Buscar usuário</label>
+                <input type="text" id="dm-busca" placeholder="Digite nome ou email..." class="modal-input" autocomplete="off">
+                <div class="search-results" id="dm-resultados"></div>
+                <div class="modal-error" id="modal-dm-error"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal cancelar" id="modal-dm-cancelar">Cancelar</button>
+                <button class="btn-modal concluir" id="modal-dm-iniciar" disabled>Iniciar Conversa</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/shared.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
