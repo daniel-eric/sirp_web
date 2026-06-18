@@ -155,6 +155,30 @@ db_desafios_init()
 db_chat_init()
 db_bloqueios_init()
 
+def db_bloqueio_migration():
+    try:
+        with DatabaseConnection() as db:
+            db.execute("ALTER TABLE conversas ADD COLUMN bloqueado_por TEXT")
+    except sqlite3.OperationalError:
+        pass
+
+    try:
+        with DatabaseConnection() as db:
+            rows = db.execute("""
+                SELECT conversa_id, MIN(user_email) as blocker
+                FROM bloqueios
+                GROUP BY conversa_id
+            """).fetchall()
+            for row in rows:
+                db.execute(
+                    "UPDATE conversas SET bloqueado_por = ? WHERE id = ? AND bloqueado_por IS NULL",
+                    (row[1], row[0])
+                )
+    except Exception as e:
+        print(f"Erro ao migrar bloqueios existentes: {e}")
+
+db_bloqueio_migration()
+
 def db_video_migration():
     try:
         with DatabaseConnection() as db:

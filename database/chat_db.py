@@ -29,8 +29,9 @@ class Mensagem:
 
 
 class ChatRepository:
-    def __init__(self, db_manager: DatabaseManager):
+    def __init__(self, db_manager: DatabaseManager, crypto):
         self.db_manager = db_manager
+        self.crypto = crypto
 
     def criar_ou_obter_dm(self, email1: str, email2: str, nome_dm: str) -> Optional[int]:
         try:
@@ -110,20 +111,26 @@ class ChatRepository:
                     WHERE conversa_id = ? AND id > ?
                     ORDER BY data_envio ASC
                 """, (conversa_id, ultimo_id))
-                return [dict(row) for row in db.fetchall()]
+                mensagens = []
+                for row in db.fetchall():
+                    msg = dict(row)
+                    msg["conteudo"] = self.crypto.decrypt(msg["conteudo"])
+                    mensagens.append(msg)
+                return mensagens
         except sqlite3.Error as e:
             print(f"SQLite error in get_mensagens: {e}")
             return []
 
     def enviar_mensagem(self, conversa_id: int, autor_email: str, conteudo: str) -> Optional[int]:
         try:
-            if self.esta_bloqueado(conversa_id, autor_email):
-                print(f"Usuário {autor_email} bloqueado na conversa {conversa_id}")
+            if self.esta_bloqueado(conversa_id):
+                print(f"Conversa {conversa_id} bloqueada, mensagem rejeitada")
                 return None
+            conteudo_criptografado = self.crypto.encrypt(conteudo)
             with self.db_manager.connect() as db:
                 db.execute(
                     "INSERT INTO mensagens (conversa_id, autor_email, conteudo) VALUES (?, ?, ?)",
-                    (conversa_id, autor_email, conteudo)
+                    (conversa_id, autor_email, conteudo_criptografado)
                 )
                 return db.cursor.lastrowid
         except sqlite3.Error as e:
@@ -160,8 +167,8 @@ class ChatRepository:
         try:
             with self.db_manager.connect() as db:
                 db.execute(
-                    "INSERT OR IGNORE INTO bloqueios (conversa_id, user_email) VALUES (?, ?)",
-                    (conversa_id, user_email)
+                    "UPDATE conversas SET bloqueado_por = ? WHERE id = ? AND bloqueado_por IS NULL",
+                    (user_email, conversa_id)
                 )
                 return db.cursor.rowcount > 0
         except sqlite3.Error as e:
@@ -172,7 +179,7 @@ class ChatRepository:
         try:
             with self.db_manager.connect() as db:
                 db.execute(
-                    "DELETE FROM bloqueios WHERE conversa_id = ? AND user_email = ?",
+                    "UPDATE conversas SET bloqueado_por = NULL WHERE id = ? AND bloqueado_por = ?",
                     (conversa_id, user_email)
                 )
                 return db.cursor.rowcount > 0
@@ -180,15 +187,15 @@ class ChatRepository:
             print(f"SQLite error in desbloquear_conversa: {e}")
             return False
 
-    def esta_bloqueado(self, conversa_id: int, user_email: str) -> bool:
+    def esta_bloqueado(self, conversa_id: int) -> str | None:
         try:
             with self.db_manager.connect() as db:
                 db.execute(
-                    "SELECT COUNT(*) FROM bloqueios WHERE conversa_id = ? AND user_email = ?",
-                    (conversa_id, user_email)
+                    "SELECT bloqueado_por FROM conversas WHERE id = ?",
+                    (conversa_id,)
                 )
                 row = db.fetchone()
-                return row is not None and row[0] > 0
+                return row[0] if row else None
         except sqlite3.Error as e:
             print(f"SQLite error in esta_bloqueado: {e}")
-            return False
+            return None

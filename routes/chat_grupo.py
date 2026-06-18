@@ -130,6 +130,13 @@ async def enviar_mensagem(
     if not conteudo:
         return JSONResponse({"erro": "Mensagem vazia"}, status_code=400)
 
+    bloqueado_por = chat_repository.esta_bloqueado(conversa_id)
+    if bloqueado_por:
+        return JSONResponse({
+            "erro": "Conversa bloqueada",
+            "bloqueado_por": bloqueado_por
+        }, status_code=423)
+
     msg_id = chat_repository.enviar_mensagem(conversa_id, logged_user, conteudo)
     if msg_id is None:
         return JSONResponse({"erro": "Erro ao enviar mensagem"}, status_code=500)
@@ -171,8 +178,11 @@ async def status_bloqueio(
     if not logged_user:
         return JSONResponse({"erro": "Não autenticado"}, status_code=401)
 
-    bloqueado = chat_repository.esta_bloqueado(conversa_id, logged_user)
-    return JSONResponse({"bloqueado": bloqueado})
+    bloqueado_por = chat_repository.esta_bloqueado(conversa_id)
+    return JSONResponse({
+        "bloqueado": bloqueado_por is not None,
+        "bloqueado_por": bloqueado_por
+    })
 
 
 @router.post("/api/conversas/{conversa_id}/bloquear")
@@ -200,6 +210,6 @@ async def desbloquear_conversa(
 
     ok = chat_repository.desbloquear_conversa(conversa_id, logged_user)
     if not ok:
-        return JSONResponse({"erro": "Erro ao desbloquear"}, status_code=409)
+        return JSONResponse({"erro": "Você não pode desbloquear esta conversa"}, status_code=403)
 
     return JSONResponse({"sucesso": True})

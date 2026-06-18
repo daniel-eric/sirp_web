@@ -199,13 +199,10 @@
                 .then(dados => {
                     if (dados.success) {
                         preview.innerHTML = `<p style="color: #4cd137;">✓ ${ehVideo ? 'Vídeo' : 'Imagem'} salvo(a) com sucesso!</p>`;
-                        if (ehVideo) {
-                            document.getElementById('btn-add-video').disabled = true;
-                            document.getElementById('btn-add-video').innerHTML = '<i class="fa-solid fa-check"></i> Vídeo adicionado';
-                        } else {
-                            document.getElementById('btn-add-imagem').disabled = true;
-                            document.getElementById('btn-add-imagem').innerHTML = '<i class="fa-solid fa-check"></i> Imagem adicionada';
-                        }
+                        document.getElementById('btn-add-video').disabled = true;
+                        document.getElementById('btn-add-video').innerHTML = '<i class="fa-solid fa-check"></i> Vídeo adicionado';
+                        document.getElementById('btn-add-imagem').disabled = true;
+                        document.getElementById('btn-add-imagem').innerHTML = '<i class="fa-solid fa-check"></i> Imagem adicionada';
                     } else {
                         preview.innerHTML = `<p style="color: #e84118;">Erro: ${dados.error || 'Falha no upload'}</p>`;
                     }

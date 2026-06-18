@@ -32,7 +32,19 @@ document.addEventListener('DOMContentLoaded', function () {
     var dmResultados = document.getElementById('dm-resultados');
 
     var IsBlocked = false;
+    var BloqueadoPor = null;
     var conversasCache = {};
+
+    function nomeOutroParticipante(conversa) {
+        if (conversa.tipo !== 'dm') return conversa.nome;
+        var participantes = conversa.participantes || [];
+        for (var i = 0; i < participantes.length; i++) {
+            if (participantes[i].user_email !== loggedUser) {
+                return participantes[i].username || participantes[i].user_email;
+            }
+        }
+        return conversa.nome;
+    }
 
     carregarConversas();
 
@@ -66,8 +78,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             div.dataset.id = c.id;
 
-            var nome = c.nome || 'Sem nome';
-            var info = c.qtd_participantes ? c.qtd_participantes + ' membros' : '';
+            var nome = c.tipo === 'dm' ? nomeOutroParticipante(c) : (c.nome || 'Sem nome');
+            var info = c.tipo === 'dm' ? '' : (c.qtd_participantes ? c.qtd_participantes + ' membros' : '');
 
             div.innerHTML =
                 '<div class="sidebar-conv-avatar">' + nome.charAt(0).toUpperCase() + '</div>' +
@@ -106,13 +118,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var c = conversasCache[id];
         if (c) {
-            chatHeaderName.textContent = c.nome;
-            var participantes = c.participantes || [];
-            var nomes = [];
-            for (var i = 0; i < participantes.length; i++) {
-                nomes.push(participantes[i].username || participantes[i].user_email);
+            if (c.tipo === 'dm') {
+                chatHeaderName.textContent = nomeOutroParticipante(c);
+                chatHeaderMeta.textContent = '';
+            } else {
+                chatHeaderName.textContent = c.nome;
+                var participantes = c.participantes || [];
+                var nomes = [];
+                for (var i = 0; i < participantes.length; i++) {
+                    nomes.push(participantes[i].username || participantes[i].user_email);
+                }
+                chatHeaderMeta.textContent = nomes.join(', ');
             }
-            chatHeaderMeta.textContent = nomes.join(', ');
         }
 
         pararPolling();
@@ -179,6 +196,11 @@ document.addEventListener('DOMContentLoaded', function () {
             body: JSON.stringify({ conteudo: conteudo })
         })
             .then(function (res) {
+                if (res.status === 423) {
+                    console.warn('Conversa bloqueada');
+                    verificarBloqueio();
+                    return;
+                }
                 if (!res.ok) throw new Error('Erro ao enviar');
                 return res.json();
             })
@@ -385,14 +407,25 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(function (res) { return res.json(); })
             .then(function (data) {
                 IsBlocked = data.bloqueado;
+                BloqueadoPor = data.bloqueado_por;
                 if (IsBlocked) {
-                    btnBloquear.style.display = '';
-                    btnBloquear.classList.add('blocked');
-                    btnBloquear.querySelector('.lock-icon').className = 'fa-solid fa-lock lock-icon';
-                    btnBloquear.querySelector('.lock-text').textContent = 'Desbloquear';
                     inputMessage.disabled = true;
                     btnSend.disabled = true;
                     if (blockedBanner) blockedBanner.style.display = 'block';
+                    if (BloqueadoPor === loggedUser) {
+                        // Eu bloqueei — posso desbloquear
+                        btnBloquear.style.display = '';
+                        btnBloquear.classList.add('blocked');
+                        btnBloquear.querySelector('.lock-icon').className = 'fa-solid fa-lock lock-icon';
+                        btnBloquear.querySelector('.lock-text').textContent = 'Desbloquear';
+                        document.getElementById('blocked-banner-text').textContent =
+                            'Você bloqueou esta conversa. Clique em Desbloquear para retomar.';
+                    } else {
+                        // Outro usuário bloqueou
+                        btnBloquear.style.display = 'none';
+                        document.getElementById('blocked-banner-text').textContent =
+                            'Conversa bloqueada por ' + BloqueadoPor + '. Apenas esta pessoa pode desbloquear.';
+                    }
                 } else {
                     btnBloquear.style.display = '';
                     btnBloquear.classList.remove('blocked');
