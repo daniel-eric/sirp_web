@@ -86,6 +86,18 @@
                         <div class="paper-field">CONTORNOS: {{ problem.contornos if problem.contornos else 'Em discussão.' }}</div>
                         <div class="paper-field">MÉTRICA DE SUCESSO: {{ problem.metricas_sucesso if problem.metricas_sucesso else 'A definir.' }}</div>
                         <div class="paper-field">RESTRIÇÕES: {{ problem.restricoes if problem.restricoes else 'Abertas a contribuições.' }}</div>
+                        <div class="paper-actions">
+                            <button class="btn-compartilhar" data-id="{{ problem.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="18" cy="5" r="3"></circle>
+                                    <circle cx="6" cy="12" r="3"></circle>
+                                    <circle cx="18" cy="19" r="3"></circle>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                                </svg>
+                                Compartilhar
+                            </button>
+                        </div>
                         <div class="paper-footer">{{ problem.autor }} | {{ problem.data_criacao }}</div>
                     </div>
 
@@ -121,6 +133,25 @@
             <div id="user-results"></div>
 
         </section>
+
+        <div class="modal-overlay" id="modal-compartilhar" style="display:none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Compartilhar Problema</h3>
+                    <button class="modal-close" id="compartilhar-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <label for="compartilhar-email">Email do usuário:</label>
+                    <input type="email" id="compartilhar-email" placeholder="email@ufrpe.br" class="modal-input">
+                    <div class="modal-error" id="compartilhar-error"></div>
+                    <div style="margin-top:10px; color: var(--laranja); font-weight:bold; display:none;" id="compartilhar-success">&#10003; Problema compartilhado com sucesso!</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-modal cancelar" id="compartilhar-cancelar">Cancelar</button>
+                    <button class="btn-modal concluir" id="compartilhar-confirmar">Compartilhar</button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <a href="/problems-manager" class="fab">

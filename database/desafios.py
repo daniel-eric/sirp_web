@@ -78,20 +78,21 @@ class DesafioRepository:
                 db.execute("SELECT * FROM desafios WHERE id = ?", (desafio_id,))
                 row = db.fetchone()
                 if row:
+                    d = dict(row)
                     return Desafio(
-                        id=row["id"],
-                        titulo=row["titulo"],
-                        autor=row["autor"],
-                        contato=row["contato"],
-                        areas=row["areas"],
-                        contexto=row["contexto"],
-                        atores=row["atores"],
-                        impacto=row["impacto"],
-                        contornos=row["contornos"],
-                        metricas_sucesso=row["metricas_sucesso"],
-                        restricoes=row["restricoes"],
-                        data_criacao=row["data_criacao"],
-                        video_path=row.get("video_path")
+                        id=d["id"],
+                        titulo=d["titulo"],
+                        autor=d["autor"],
+                        contato=d["contato"],
+                        areas=d["areas"],
+                        contexto=d["contexto"],
+                        atores=d["atores"],
+                        impacto=d["impacto"],
+                        contornos=d["contornos"],
+                        metricas_sucesso=d["metricas_sucesso"],
+                        restricoes=d["restricoes"],
+                        data_criacao=d["data_criacao"],
+                        video_path=d.get("video_path")
                     )
             return None
         except sqlite3.Error as e:

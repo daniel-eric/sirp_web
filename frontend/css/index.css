@@ -187,6 +187,32 @@
     font-weight: normal;
 }
 
+.paper-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.btn-compartilhar {
+    background: none;
+    border: 1px solid var(--laranja);
+    border-radius: 6px;
+    color: var(--laranja);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+}
+
+.btn-compartilhar:hover {
+    background: var(--laranja);
+    color: var(--preto);
+}
+
 .folder-front {
     background-color: var(--bege);
     border-radius: 0 0.9375rem 0.9375rem 0.9375rem;
@@ -556,4 +582,125 @@
         bottom: 0.75rem; right: 0.75rem;
     }
     .fab svg { width: 1.25rem; height: 1.25rem; }
+}
+
+/* === Modal Compartilhar === */
+.btn-compartilhar + .btn-compartilhar {
+    margin-left: 0.5rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--cinza-profundo);
+    border: 2px solid var(--verde-escuro);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 450px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: linear-gradient(var(--gradiente-verde));
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--laranja);
+}
+
+.modal-header h3 {
+    color: var(--bege);
+    font-family: 'Space Mono', monospace;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--bege);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-body label {
+    color: var(--bege);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.modal-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--verde-escuro);
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: var(--branco);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.modal-input:focus {
+    border-color: var(--laranja);
+}
+
+.modal-error {
+    color: #e74c3c;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    min-height: 1.2em;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    border-top: 1px solid var(--verde-escuro);
+}
+
+.btn-modal {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 2px solid var(--verde-escuro);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-modal.cancelar {
+    background: transparent;
+    color: var(--bege);
+}
+
+.btn-modal.cancelar:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-modal.concluir {
+    background: var(--laranja);
+    color: var(--preto);
+    border-color: var(--laranja);
+    font-weight: bold;
+}
+
+.btn-modal.concluir:hover {
+    background: #ffaa00;
 }

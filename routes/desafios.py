@@ -1,7 +1,7 @@
 import os
-from fastapi import APIRouter, Form, Cookie
-from fastapi.responses import RedirectResponse, Response, FileResponse
-from backend.dependencies import user_repository, desafio_repository
+from fastapi import APIRouter, Form, Cookie, Path, Request
+from fastapi.responses import RedirectResponse, Response, FileResponse, JSONResponse
+from backend.dependencies import user_repository, desafio_repository, chat_repository
 from database.desafios import Desafio
 
 router = APIRouter()
@@ -91,3 +91,49 @@ async def servir_video(desafio_id: int):
     if not video_path or not os.path.exists(video_path):
         return Response(status_code=404)
     return FileResponse(video_path, media_type="video/mp4")
+
+
+@router.post("/api/desafios/{desafio_id}/compartilhar")
+async def compartilhar_desafio(
+    desafio_id: int = Path(...),
+    request: Request = None,
+    logged_user: str | None = Cookie(default=None, alias="logged_user")
+):
+    if not logged_user:
+        return JSONResponse({"erro": "Nao autenticado"}, status_code=401)
+
+    body = await request.json()
+    email_destino = body.get("email", "").strip().lower()
+
+    if not email_destino:
+        return JSONResponse({"erro": "Email é obrigatório"}, status_code=400)
+
+    destino = user_repository.find_by_identifier(email_destino)
+    if not destino:
+        return JSONResponse({"erro": "Usuário não encontrado"}, status_code=404)
+
+    desafio = desafio_repository.get(desafio_id)
+    if not desafio:
+        return JSONResponse({"erro": "Desafio não encontrado"}, status_code=404)
+
+    nome_dm = destino.username
+    conversa_id = chat_repository.criar_ou_obter_dm(logged_user, destino.email, nome_dm)
+    if not conversa_id:
+        return JSONResponse({"erro": "Erro ao criar conversa"}, status_code=500)
+
+    mensagem = (
+        f"📋 PROBLEMA COMPARTILHADO\n\n"
+        f"Título: {desafio.titulo}\n"
+        f"Áreas: {desafio.areas}\n"
+        f"Autor: {desafio.autor}\n"
+        f"Contexto: {desafio.contexto}\n"
+        f"Impacto: {desafio.impacto}\n"
+        f"Contornos: {desafio.contornos}\n"
+        f"Restrições: {desafio.restricoes}"
+    )
+
+    msg_id = chat_repository.enviar_mensagem(conversa_id, logged_user, mensagem)
+    if not msg_id:
+        return JSONResponse({"erro": "Erro ao enviar mensagem"}, status_code=500)
+
+    return JSONResponse({"sucesso": True, "conversa_id": conversa_id})

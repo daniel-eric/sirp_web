@@ -146,7 +146,88 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.feed-section').addEventListener('click', function (e) {
         var folder = e.target.closest('.folder');
         if (folder) {
+            var btn = e.target.closest('.btn-compartilhar');
+            if (btn) return;
             folder.classList.toggle('aberta');
         }
     });
+
+    // === Compartilhar Problema ===
+    var desafioCompartilharId = null;
+    var modalShare = document.getElementById('modal-compartilhar');
+    var shareEmail = document.getElementById('compartilhar-email');
+    var shareError = document.getElementById('compartilhar-error');
+    var shareSuccess = document.getElementById('compartilhar-success');
+    var shareConfirmar = document.getElementById('compartilhar-confirmar');
+    var shareCancelar = document.getElementById('compartilhar-cancelar');
+    var shareClose = document.getElementById('compartilhar-close');
+
+    document.querySelector('.feed-section').addEventListener('click', function (e) {
+        var btn = e.target.closest('.btn-compartilhar');
+        if (!btn) return;
+        e.stopPropagation();
+        desafioCompartilharId = btn.dataset.id;
+        shareEmail.value = '';
+        shareError.textContent = '';
+        shareSuccess.style.display = 'none';
+        modalShare.style.display = 'flex';
+        shareEmail.focus();
+    });
+
+    function fecharModalShare() {
+        modalShare.style.display = 'none';
+        desafioCompartilharId = null;
+    }
+
+    if (shareClose) shareClose.addEventListener('click', fecharModalShare);
+    if (shareCancelar) shareCancelar.addEventListener('click', fecharModalShare);
+    if (modalShare) {
+        modalShare.addEventListener('click', function (e) {
+            if (e.target === modalShare) fecharModalShare();
+        });
+    }
+
+    if (shareConfirmar) {
+        shareConfirmar.addEventListener('click', function () {
+            var email = shareEmail.value.trim();
+            if (!email) {
+                shareError.textContent = 'Informe o email do usuário.';
+                return;
+            }
+            shareError.textContent = '';
+            shareConfirmar.disabled = true;
+            shareConfirmar.textContent = 'Compartilhando...';
+
+            fetch('/api/desafios/' + desafioCompartilharId + '/compartilhar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            })
+                .then(function (res) {
+                    return res.json().then(function (data) {
+                        if (!res.ok) throw new Error(data.erro || 'Erro ao compartilhar');
+                        return data;
+                    });
+                })
+                .then(function () {
+                    shareSuccess.style.display = 'block';
+                    shareError.textContent = '';
+                    shareConfirmar.style.display = 'none';
+                    shareCancelar.textContent = 'Fechar';
+                    setTimeout(function () {
+                        fecharModalShare();
+                        shareConfirmar.disabled = false;
+                        shareConfirmar.textContent = 'Compartilhar';
+                        shareConfirmar.style.display = '';
+                        shareCancelar.textContent = 'Cancelar';
+                        shareSuccess.style.display = 'none';
+                    }, 2000);
+                })
+                .catch(function (err) {
+                    shareError.textContent = err.message;
+                    shareConfirmar.disabled = false;
+                    shareConfirmar.textContent = 'Compartilhar';
+                });
+        });
+    }
 });
