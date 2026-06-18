@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Request, Cookie
-from fastapi.responses import RedirectResponse
+from fastapi import APIRouter, Request, Cookie, Query
+from fastapi.responses import RedirectResponse, JSONResponse
 from backend.dependencies import templates, desafio_repository, user_repository
 
 router = APIRouter()
@@ -47,6 +47,21 @@ async def landing_page(
             "time_filter": time or ""
         }
     )
+
+
+@router.get("/api/users/search")
+async def search_users(
+    q: str = Query(""),
+    logged_user: str | None = Cookie(default=None, alias="logged_user")
+):
+    if not logged_user:
+        return JSONResponse({"users": []}, status_code=401)
+
+    if not q.strip():
+        return JSONResponse({"users": []})
+
+    users = user_repository.search(q, exclude_email=logged_user)
+    return JSONResponse({"users": users})
 
 
 @router.get("/profile")

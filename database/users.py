@@ -130,6 +130,31 @@ class UserRepository:
             return False
 
 
+    def search(self, query: str, exclude_email: str | None = None) -> list[dict]:
+        try:
+            with self.db_manager.connect(row_factory=sqlite3.Row) as db:
+                sql = '''
+                    SELECT username, email, tellNum
+                    FROM users
+                    WHERE (LOWER(username) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?))
+                '''
+                params = [f"%{query.strip()}%", f"%{query.strip()}%"]
+
+                if exclude_email:
+                    sql += " AND email != ?"
+                    params.append(exclude_email)
+
+                sql += " LIMIT 20"
+
+                db.execute(sql, params)
+                return [dict(row) for row in db.fetchall()]
+        except sqlite3.Error as e:
+            print(f"SQLite error in search_users: {e}")
+            return []
+        except Exception as e:
+            print(f"General exception in search_users: {e}")
+            return []
+
     def find_by_identifier(self, identifier: str) -> Optional[User]:
         try:
             with self.db_manager.connect(row_factory=sqlite3.Row) as db:

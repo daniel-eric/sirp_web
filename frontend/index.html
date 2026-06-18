@@ -41,7 +41,11 @@
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
                 <div class="search-input-container">
-                    <input type="text" name="title" placeholder="Título" value="{{ title_filter }}">
+                    <div class="search-mode-toggle">
+                        <button type="button" class="search-mode-btn ativo" data-mode="problems">Problemas</button>
+                        <button type="button" class="search-mode-btn" data-mode="users">Usuários</button>
+                    </div>
+                    <input type="text" name="title" id="search-input" placeholder="Buscar problemas..." value="{{ title_filter }}">
                     <button type="submit" class="filter-icon" aria-label="Filtrar">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="4" y1="21" x2="4" y2="14"></line>
@@ -112,6 +116,8 @@
                 <p class="empty-feed-sub">Seja o primeiro a reportar um problema!</p>
             </div>
             {% endfor %}
+
+            <div id="user-results"></div>
 
         </section>
     </main>

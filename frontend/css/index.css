@@ -407,6 +407,103 @@
     .fab svg { width: 1.5625rem; height: 1.5625rem; }
 }
 
+.search-mode-toggle {
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+    margin-right: 0.5rem;
+}
+
+.search-mode-btn {
+    background: transparent;
+    border: 2px solid var(--verde-escuro);
+    color: var(--verde-escuro);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
+}
+
+.search-mode-btn:first-child {
+    border-radius: 1rem 0 0 1rem;
+}
+
+.search-mode-btn:last-child {
+    border-radius: 0 1rem 1rem 0;
+    border-left: none;
+}
+
+.search-mode-btn.ativo {
+    background-color: var(--verde-escuro);
+    color: var(--branco);
+}
+
+#user-results {
+    display: none;
+    width: 100%;
+    max-width: 50rem;
+    margin-top: 1.25rem;
+}
+
+.user-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    transition: background 0.2s;
+}
+
+.user-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.user-card-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--laranja);
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1;
+}
+
+.user-card-name {
+    font-family: 'Space Mono', monospace;
+    font-weight: bold;
+    color: var(--bege);
+    font-size: 1.05rem;
+}
+
+.user-card-email {
+    font-family: 'Space Mono', monospace;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.85rem;
+}
+
+.user-card-phone {
+    font-family: 'Space Mono', monospace;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
 @media (max-width: 480px) {
     .feed-title {
         letter-spacing: 2px;
